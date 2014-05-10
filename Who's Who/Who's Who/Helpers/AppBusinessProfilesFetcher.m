@@ -54,35 +54,52 @@
 	 */
 	for (TFHppleElement *profileElement in userProfilesElements)
 	{
-		// Create new profile
-		Profile *profile = [Profile insertInContext:mainContext];
-		
 		//----
 		// Name
 		TFHppleElement *hTagElement = profileElement.children[1];
 		TFHppleElement *nameElement = hTagElement.children.firstObject;
-		profile.name = nameElement.content;
+		NSString *name = nameElement.content;
 		
 		//----
 		// Position
 		TFHppleElement *pTagElement = profileElement.children[2];
 		TFHppleElement *positionElement = pTagElement.children.firstObject;
-		profile.position = positionElement.content;
+		NSString *position = positionElement.content;
 		
 		//----
 		// Bio
 		TFHppleElement *userDescriptionPTagElement = profileElement.children[3];
 		TFHppleElement *bioElement = userDescriptionPTagElement.children.firstObject;
-		profile.biography = bioElement.content;
+		NSString *biography = bioElement.content;
 		
 		//----
 		// Image
 		TFHppleElement *srcElement = profileElement.children[0];
 		TFHppleElement *imageElement = srcElement.children.firstObject;
-		profile.imageString = imageElement.attributes[@"src"];
+		NSString *imageString = imageElement.attributes[@"src"];
 		
 		//----
-		// Last modified
+		// Create new profile or fetch existing one
+		NSFetchRequest *fetchRequest = [Profile fetchRequest];
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
+		
+		Profile *profile = nil;
+		NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
+		if (profileArray.count > 0)
+		{
+			profile = profileArray.firstObject;
+		}
+		else
+		{
+			profile = [Profile insertInContext:mainContext];
+		}
+
+		//----
+		// Fill in properties for Profile
+		profile.name = name;
+		profile.position = position;
+		profile.biography = biography;
+		profile.imageString = imageString;
 		profile.lastModified = lastModified;
 	}
 	
