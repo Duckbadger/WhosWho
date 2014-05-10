@@ -7,7 +7,9 @@
 //
 
 #import "AppBusinessProfilesFetcher.h"
+#import "AppDelegate.h"
 #import "CoreDataManager.h"
+#import "Profile.h"
 #import <TFHpple.h>
 
 @implementation AppBusinessProfilesFetcher
@@ -38,7 +40,17 @@
     NSString *userProfileXpathQueryString = @"//div[@class='col col2']";//@"//section[@id='users']";//@"//div[@class='wrapper']";
 	NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
 
+	
+	//TESTING
+	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
+	
+	Profile *testProfile = [Profile insertInContext:mainContext];
+	testProfile.name = @"Bob Testington";
+	testProfile.position = @"Test Engineer";
+	testProfile.lastModified = [NSDate date];
 
+	
 	return @[];
 }
 

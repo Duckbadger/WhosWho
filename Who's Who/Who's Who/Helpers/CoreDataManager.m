@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) NSString *storeType;
 @property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic, readwrite) NSManagedObjectContext *mainContext;
 
 @end
 
@@ -27,6 +29,49 @@
 		self.managedObjectModel = managedObjectModel;
 	}
     return self;
+}
+
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+	if (!_persistentStoreCoordinator)
+	{
+		NSURL *storeURL = [NSURL URLWithString:[NSString stringWithFormat:@"WhosWho.sqlite"]];
+		
+		NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+		
+		NSDictionary *options = @{
+								  NSMigratePersistentStoresAutomaticallyOption: @(YES),
+								  NSInferMappingModelAutomaticallyOption : @(YES)
+								  };
+		NSError *error = nil;
+		[persistentStoreCoordinator addPersistentStoreWithType:self.storeType
+												 configuration:nil
+														   URL:storeURL
+													   options:options
+														 error:&error];
+		if (error)
+		{
+			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			abort();
+			
+		}
+		
+		_persistentStoreCoordinator = persistentStoreCoordinator;
+	}
+	
+	return _persistentStoreCoordinator;
+}
+
+- (NSManagedObjectContext *)mainContext
+{
+    if (!_mainContext)
+	{
+		_mainContext = [[NSManagedObjectContext alloc] init];
+		_mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    }
+    
+    return _mainContext;
 }
 
 @end

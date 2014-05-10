@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NSManagedObject+CoreDataManagerExtensions.h"
 
 @interface CoreDataManager : NSObject
+
+@property (strong, nonatomic, readonly) NSManagedObjectContext *mainContext;
 
 - (id)initWithStoreType:(NSString *)storeType managedObjectModel:(NSManagedObjectModel *)managedObjectModel;
 
