@@ -36,7 +36,7 @@
 	
 	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
 	self.coreDataManager = appDel.coreDataManager;
-
+	
 	self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
 }
 

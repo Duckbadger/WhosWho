@@ -106,6 +106,18 @@
 	// Save the context
 	[mainContext save:nil];
 	
+	// Delete old profiles
+	// Anything not updated was therefore not on the website anymore
+	// Check for anything below the last modified date
+	NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
+	oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
+	NSArray *oldProfileArray = [mainContext executeFetchRequest:oldProfilesFetchRequest error:nil];
+	for (Profile *profile in oldProfileArray)
+	{
+		[mainContext deleteObject:profile];
+	}
+	[mainContext save:nil];
+	
 	// Retrieve the objects to return
 	NSFetchRequest *fetchRequest = [Profile fetchRequest];
 	NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
