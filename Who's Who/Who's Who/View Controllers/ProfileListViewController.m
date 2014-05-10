@@ -7,6 +7,7 @@
 //
 
 #import "ProfileListViewController.h"
+#import "AppBusinessProfilesFetcher.h"
 
 @interface ProfileListViewController ()
 
@@ -27,6 +28,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	
+	[AppBusinessProfilesFetcher fetchProfiles];
 }
 
 - (void)didReceiveMemoryWarning

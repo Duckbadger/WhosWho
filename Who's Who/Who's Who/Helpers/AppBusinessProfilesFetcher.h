@@ -1,5 +1,5 @@
 //
-//  HTMLParser.h
+//  AppBusinessProfilesFetcher.h
 //  Who's Who
 //
 //  Created by Ken Boucher on 10/05/2014.
@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HTMLParser : NSObject
+@interface AppBusinessProfilesFetcher : NSObject
+
++ (NSArray *)fetchProfiles;
 
 @end
