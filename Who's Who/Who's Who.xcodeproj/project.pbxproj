@@ -11,6 +11,8 @@
 		BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */; };
 		BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6053191E8B630037C242 /* CoreDataManager.m */; };
 		BE1E6056191E8D8A0037C242 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1E6055191E8D8A0037C242 /* CoreData.framework */; };
+		BE1E605A191E8F440037C242 /* WhosWho.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6058191E8F440037C242 /* WhosWho.xcdatamodeld */; };
+		BE1E605D191E8FE70037C242 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E605C191E8FE70037C242 /* Profile.m */; };
 		BEF25007191E4C950063374F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25006191E4C950063374F /* Foundation.framework */; };
 		BEF25009191E4C950063374F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25008191E4C950063374F /* CoreGraphics.framework */; };
 		BEF2500B191E4C950063374F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF2500A191E4C950063374F /* UIKit.framework */; };
@@ -45,6 +47,9 @@
 		BE1E6052191E8B630037C242 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		BE1E6053191E8B630037C242 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		BE1E6055191E8D8A0037C242 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		BE1E6059191E8F440037C242 /* WhosWho.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhosWho.xcdatamodel; sourceTree = "<group>"; };
+		BE1E605B191E8FE70037C242 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		BE1E605C191E8FE70037C242 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		BEF25003191E4C950063374F /* Who's Who.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Who's Who.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF25006191E4C950063374F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEF25008191E4C950063374F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -103,6 +108,16 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		BE1E6057191E8F0F0037C242 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				BE1E6058191E8F440037C242 /* WhosWho.xcdatamodeld */,
+				BE1E605B191E8FE70037C242 /* Profile.h */,
+				BE1E605C191E8FE70037C242 /* Profile.m */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		BEF24FFA191E4C950063374F = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +156,7 @@
 			children = (
 				BEF25015191E4C960063374F /* AppDelegate.h */,
 				BEF25016191E4C960063374F /* AppDelegate.m */,
+				BE1E6057191E8F0F0037C242 /* Core Data */,
 				BE1E604B191E7BB90037C242 /* Helpers */,
 				BEF25040191E4FF50063374F /* View Controllers */,
 				BEF2503C191E4FF50063374F /* Resources */,
@@ -333,6 +349,8 @@
 				BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */,
 				BEF25045191E60B00063374F /* ProfileListViewController.m in Sources */,
 				BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */,
+				BE1E605D191E8FE70037C242 /* Profile.m in Sources */,
+				BE1E605A191E8F440037C242 /* WhosWho.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,6 +573,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BE1E6058191E8F440037C242 /* WhosWho.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BE1E6059191E8F440037C242 /* WhosWho.xcdatamodel */,
+			);
+			currentVersion = BE1E6059191E8F440037C242 /* WhosWho.xcdatamodel */;
+			path = WhosWho.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BEF24FFB191E4C950063374F /* Project object */;
 }

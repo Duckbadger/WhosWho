@@ -7,6 +7,7 @@
 //
 
 #import "AppBusinessProfilesFetcher.h"
+#import "CoreDataManager.h"
 #import <TFHpple.h>
 
 @implementation AppBusinessProfilesFetcher
