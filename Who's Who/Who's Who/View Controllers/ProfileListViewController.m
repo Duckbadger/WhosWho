@@ -7,9 +7,13 @@
 //
 
 #import "ProfileListViewController.h"
+#import "ProfilePreviewCell.h"
 #import "AppBusinessProfilesFetcher.h"
+#import "Profile.h"
 
-@interface ProfileListViewController ()
+@interface ProfileListViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (strong, nonatomic) NSArray *profileArray;
 
 @end
 
@@ -27,20 +31,35 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+	self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
 	
-	[AppBusinessProfilesFetcher fetchProfiles];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Collection View Data Sources
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+	return self.profileArray.count;
+}
+
+// The cell that is returned must be retrieved from a call to - dequeueReusableCellWithReuseIdentifier:forIndexPath:
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	ProfilePreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
+
+    return cell;
 }
 
 @end
