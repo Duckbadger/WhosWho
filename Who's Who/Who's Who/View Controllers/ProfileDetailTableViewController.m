@@ -38,6 +38,7 @@ typedef enum
     [super viewDidLoad];
     
 	self.title = self.profile.name;
+	self.tableView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,7 +67,6 @@ typedef enum
 	{
 		case ProfileRowBio:
 		{
-			NSLog(@"%@", self.profile.biography);
 			UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
 			UILabel *textLabel = cell.textLabel;
 			CGSize maximumLabelSize = CGSizeMake(textLabel.frame.size.width, FLT_MAX);
@@ -87,7 +87,6 @@ typedef enum
 	}
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -98,6 +97,15 @@ typedef enum
 		{
 			UIImageView *imageView = (UIImageView *)[cell viewWithTag:kTagImage];
 			imageView.image = [self.profile getCachedFullImage];
+			
+			imageView.layer.cornerRadius = 105.0;
+			imageView.layer.masksToBounds = YES;
+			
+			imageView.layer.borderColor = [UIColor colorWithRed:255.0/255
+														   green:68.0/255
+															blue:0.0/255
+														   alpha:1.0].CGColor;
+			imageView.layer.borderWidth = 5.0;
 			
 			break;
 		}
