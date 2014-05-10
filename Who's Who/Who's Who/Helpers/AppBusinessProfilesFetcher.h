@@ -10,6 +10,7 @@
 
 @interface AppBusinessProfilesFetcher : NSObject
 
++ (NSArray *)fetchCachedProfiles;
 + (NSArray *)fetchProfiles;
 
 @end

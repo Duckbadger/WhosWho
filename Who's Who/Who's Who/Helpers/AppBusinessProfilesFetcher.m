@@ -14,6 +14,19 @@
 
 @implementation AppBusinessProfilesFetcher
 
++ (NSArray *)fetchCachedProfiles
+{
+	// Retrieve the main context from the core data manager
+	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
+	
+	// Retrieve the objects to return
+	NSFetchRequest *fetchRequest = [Profile fetchRequest];
+	NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
+	
+	return profileArray;
+}
+
 + (NSArray *)fetchProfiles
 {
 	// Retrieve the main context from the core data manager
@@ -126,9 +139,7 @@
 		}
 	}
 	
-	// Retrieve the objects to return
-	NSFetchRequest *fetchRequest = [Profile fetchRequest];
-	NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
+	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
 	
 	return profileArray;
 }
