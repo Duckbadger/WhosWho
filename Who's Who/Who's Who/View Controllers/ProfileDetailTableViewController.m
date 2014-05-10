@@ -65,6 +65,33 @@ typedef enum
     return [super tableView:tableView numberOfRowsInSection:section];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	switch (indexPath.row)
+	{
+		case ProfileRowBio:
+		{
+			NSLog(@"%@", self.profile.biography);
+			UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+			UILabel *textLabel = cell.textLabel;
+			CGSize maximumLabelSize = CGSizeMake(textLabel.frame.size.width, FLT_MAX);
+			CGRect labelRect = [self.profile.biography
+								boundingRectWithSize:maximumLabelSize
+								options:NSStringDrawingUsesLineFragmentOrigin
+								attributes:@{
+											 NSFontAttributeName : textLabel.font
+											 }
+								context:nil];
+			
+			return labelRect.size.height + 20;
+		}
+		default:
+		{
+			return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+		}
+	}
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
