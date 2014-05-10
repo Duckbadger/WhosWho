@@ -37,6 +37,8 @@ typedef enum
 {
     [super viewDidLoad];
     
+	self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
+	
 	self.title = self.profile.name;
 }
 
