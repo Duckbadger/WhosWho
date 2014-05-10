@@ -36,22 +36,64 @@
 	 *					<p class="user-description"> // Bio
 	 */
 	
-	// <section id="users">
+	// Get all the profiles
     NSString *userProfileXpathQueryString = @"//div[@class='col col2']";//@"//section[@id='users']";//@"//div[@class='wrapper']";
 	NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
-
+	NSDate *lastModified = [NSDate date];
 	
-	//TESTING
+	// Retrieve the main context from the core data manager
 	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
 	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
 	
-	Profile *testProfile = [Profile insertInContext:mainContext];
-	testProfile.name = @"Bob Testington";
-	testProfile.position = @"Test Engineer";
-	testProfile.lastModified = [NSDate date];
-
+	/*
+	 *	Note - Structure for the profileElement is:
+	 *	[0]	Image
+	 *	[1]	Name
+	 *	[2]	Position
+	 *	[3]	Bio
+	 */
+	for (TFHppleElement *profileElement in userProfilesElements)
+	{
+		// Create new profile
+		Profile *profile = [Profile insertInContext:mainContext];
+		
+		//----
+		// Name
+		TFHppleElement *hTagElement = profileElement.children[1];
+		TFHppleElement *nameElement = hTagElement.children.firstObject;
+		profile.name = nameElement.content;
+		
+		//----
+		// Position
+		TFHppleElement *pTagElement = profileElement.children[2];
+		TFHppleElement *positionElement = pTagElement.children.firstObject;
+		profile.position = positionElement.content;
+		
+		//----
+		// Bio
+		TFHppleElement *userDescriptionPTagElement = profileElement.children[3];
+		TFHppleElement *bioElement = userDescriptionPTagElement.children.firstObject;
+		profile.biography = bioElement.content;
+		
+		//----
+		// Image
+		TFHppleElement *srcElement = profileElement.children[0];
+		TFHppleElement *imageElement = srcElement.children.firstObject;
+		profile.imageString = imageElement.attributes[@"src"];
+		
+		//----
+		// Last modified
+		profile.lastModified = lastModified;
+	}
 	
-	return @[];
+	// Save the context
+	[mainContext save:nil];
+	
+	// Retrieve the objects to return
+	NSFetchRequest *fetchRequest = [Profile fetchRequest];
+	NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
+	
+	return profileArray;
 }
 
 @end
