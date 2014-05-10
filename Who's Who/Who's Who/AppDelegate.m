@@ -24,6 +24,11 @@
 									  nil];
 	[[UINavigationBar appearance] setTitleTextAttributes:textTitleOptions];
 	
+	[[UIRefreshControl appearance] setTintColor:[UIColor colorWithRed:255.0/255
+																green:68.0/255
+																 blue:0.0/255
+																alpha:1.0]];
+	
     return YES;
 }
 							
