@@ -37,13 +37,23 @@
 	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
 	self.coreDataManager = appDel.coreDataManager;
 	
-	self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
+	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
 	
+	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
+		
+		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.collectionView reloadData];
+		});
+		
+		NSLog(@"done async");
+	});
 }
 
 - (void)didReceiveMemoryWarning
