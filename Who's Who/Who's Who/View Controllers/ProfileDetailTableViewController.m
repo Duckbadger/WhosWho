@@ -37,9 +37,8 @@ typedef enum
 {
     [super viewDidLoad];
     
-	self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
-	
 	self.title = self.profile.name;
+	self.tableView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,7 +67,6 @@ typedef enum
 	{
 		case ProfileRowBio:
 		{
-			NSLog(@"%@", self.profile.biography);
 			UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
 			UILabel *textLabel = cell.textLabel;
 			CGSize maximumLabelSize = CGSizeMake(textLabel.frame.size.width, FLT_MAX);
@@ -88,7 +86,6 @@ typedef enum
 		}
 	}
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
