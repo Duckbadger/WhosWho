@@ -87,8 +87,7 @@
 	}
 	else
 	{
-		UIImage *image = [UIImage imageWithData:profile.imageData];
-		cell.profileImageView.image = image;
+		cell.profileImageView.image = [profile getCachedImage];
 	}
 	
 	

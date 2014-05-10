@@ -14,23 +14,20 @@
 {
 	NSURL *url = [NSURL URLWithString:self.imageString];
 	
-	if (self.imageData == nil)
-	{
-		dispatch_queue_t downloadQueue = dispatch_queue_create("imageQueue", NULL);
-		dispatch_async(downloadQueue, ^{
-			NSData *imageData = [NSData dataWithContentsOfURL:url];
-			
-			self.imageData = imageData;
-			
-			UIImage *image = [UIImage imageWithData:imageData];
-            completionBlock(image);
-		});
-	}
-	else
-	{
-		UIImage *image = [UIImage imageWithData:self.imageData];
+	dispatch_queue_t downloadQueue = dispatch_queue_create("imageQueue", NULL);
+	dispatch_async(downloadQueue, ^{
+		NSData *imageData = [NSData dataWithContentsOfURL:url];
+		
+		self.imageData = imageData;
+		
+		UIImage *image = [UIImage imageWithData:imageData];
 		completionBlock(image);
-	}
+	});
+}
+
+- (UIImage *)getCachedImage
+{
+	return [UIImage imageWithData:self.imageData];
 }
 
 @end

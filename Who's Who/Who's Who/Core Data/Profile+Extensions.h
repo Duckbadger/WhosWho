@@ -11,5 +11,6 @@
 @interface Profile (Extensions)
 
 - (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock;
+- (UIImage *)getCachedImage;
 
 @end
