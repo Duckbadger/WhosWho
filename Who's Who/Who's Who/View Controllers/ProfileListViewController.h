@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ProfileListViewController.h
 //  Who's Who
 //
 //  Created by Ken Boucher on 10/05/2014.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ProfileListViewController : UICollectionViewController
 
 @end
