@@ -45,7 +45,7 @@
 + (UIImage *)resizedImageWithData:(NSData *)data
 {
 	UIImage *image = [UIImage imageWithData:data];
-	CGSize newSize = CGSizeMake(120, 120);
+	CGSize newSize = CGSizeMake(150, 150);
 	
 	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
     [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
