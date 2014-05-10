@@ -10,6 +10,7 @@
                 <navigationController definesPresentationContext="YES" id="Qxi-qW-Ibq" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0iM-Wh-5sp">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="0.26666666666666666" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="XtG-uH-JJv" kind="relationship" relationship="rootViewController" id="EE3-uj-eu4"/>
@@ -19,7 +20,7 @@
             </objects>
             <point key="canvasLocation" x="115" y="-315"/>
         </scene>
-        <!--Profile List View Controller-->
+        <!--Profile List View Controller - Who's Who-->
         <scene sceneID="cXg-kR-qa8">
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="XtG-uH-JJv" customClass="ProfileListViewController" sceneMemberID="viewController">
@@ -74,7 +75,7 @@
                             <outlet property="delegate" destination="XtG-uH-JJv" id="Or0-Ym-TYL"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="WGZ-Fz-iDb"/>
+                    <navigationItem key="navigationItem" title="Who's Who" id="WGZ-Fz-iDb"/>
                     <connections>
                         <segue destination="dmO-fb-pS1" kind="push" identifier="segueDetail" id="nKk-Cd-tty"/>
                     </connections>
