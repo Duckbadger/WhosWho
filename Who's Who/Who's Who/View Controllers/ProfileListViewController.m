@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) CoreDataManager *coreDataManager;
 @property (strong, nonatomic) NSArray *profileArray;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @end
 
@@ -33,6 +34,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.refreshControl = [[UIRefreshControl alloc] init];
+
+	self.collectionView.alwaysBounceVertical = YES;
 	
 	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
 	self.coreDataManager = appDel.coreDataManager;
@@ -40,9 +45,21 @@
 	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
+	[self.refreshControl addTarget:self action:@selector(startRefresh)
+			 forControlEvents:UIControlEventValueChanged];
+	[self.collectionView addSubview:self.refreshControl];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+
+	[self.refreshControl beginRefreshing];
+	[self.collectionView setContentOffset:CGPointMake(0, self.collectionView.contentOffset.y-self.refreshControl.frame.size.height) animated:YES];
 	
 	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
 		
@@ -50,9 +67,8 @@
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.collectionView reloadData];
+			[self.refreshControl endRefreshing];
 		});
-		
-		NSLog(@"done async");
 	});
 }
 
@@ -60,6 +76,20 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Class Methods
+- (void)startRefresh
+{
+	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
+		
+		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.collectionView reloadData];
+			[self.refreshControl endRefreshing];
+		});
+	});
 }
 
 #pragma mark - Collection View Data Sources
