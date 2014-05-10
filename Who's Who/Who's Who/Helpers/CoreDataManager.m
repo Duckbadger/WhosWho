@@ -10,6 +10,15 @@
 
 @implementation CoreDataManager
 
-
+- (id)initWithStoreType:(NSString *)storeType managedObjectModel:(NSManagedObjectModel *)managedObjectModel
+{
+    self = [super init];
+ 
+	if (self)
+	{
+		
+	}
+    return self;
+}
 
 @end
