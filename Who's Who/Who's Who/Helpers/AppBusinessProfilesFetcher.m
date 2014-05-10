@@ -112,14 +112,18 @@
 		// Delete old profiles
 		// Anything not updated was therefore not on the website anymore
 		// Check for anything below the last modified date
-		NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
-		oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
-		NSArray *oldProfileArray = [mainContext executeFetchRequest:oldProfilesFetchRequest error:nil];
-		for (Profile *profile in oldProfileArray)
+		// Only do this if the url was valid, i.e. got userProfileElements
+		if (userProfilesElements.count > 0)
 		{
-			[mainContext deleteObject:profile];
+			NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
+			oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
+			NSArray *oldProfileArray = [mainContext executeFetchRequest:oldProfilesFetchRequest error:nil];
+			for (Profile *profile in oldProfileArray)
+			{
+				[mainContext deleteObject:profile];
+			}
+			[mainContext save:nil];
 		}
-		[mainContext save:nil];
 	}
 	
 	// Retrieve the objects to return
