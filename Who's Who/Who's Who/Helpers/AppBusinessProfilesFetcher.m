@@ -33,13 +33,11 @@
 	 *					<p class="user-description"> // Bio
 	 */
 	
-	//div[@class='column']
-    NSString *userSectionXpathQueryString = @"//div[@class='wrapper']";//@"<section id=\"users\">";
-	NSArray *userSectionArray = [htmlParser searchWithXPathQuery:userSectionXpathQueryString];
-	
-	
+	// <section id="users">
+    NSString *userProfileXpathQueryString = @"//div[@class='col col2']";//@"//section[@id='users']";//@"//div[@class='wrapper']";
+	NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
 
-	NSLog(@"end");
+
 	return @[];
 }
 
