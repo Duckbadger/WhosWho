@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Ken Boucher. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "ProfileListViewController.h"
 #import "ProfilePreviewCell.h"
 #import "AppBusinessProfilesFetcher.h"
-#import "Profile.h"
+#import "Profile+Extensions.h"
 
 @interface ProfileListViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (strong, nonatomic) CoreDataManager *coreDataManager;
 @property (strong, nonatomic) NSArray *profileArray;
 
 @end
@@ -31,6 +33,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
+	self.coreDataManager = appDel.coreDataManager;
 
 	self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
 }
@@ -63,6 +68,31 @@
 	Profile *profile = self.profileArray[indexPath.row];
 	cell.nameLabel.text = profile.name;
 	cell.positionLabel.text = profile.position;
+	
+	if (profile.imageData == nil)
+	{
+		cell.profileImageView.image = nil;
+		
+		[profile getImageWithBlock:^(UIImage *image) {
+			cell.profileImageView.image = image;
+			
+			[self.coreDataManager.mainContext save:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				[collectionView reloadItemsAtIndexPaths:@[indexPath]];
+			});
+						   
+			NSLog(@"%@", indexPath);
+		}];
+	}
+	else
+	{
+		UIImage *image = [UIImage imageWithData:profile.imageData];
+		cell.profileImageView.image = image;
+	}
+	
+	
+
 	
     return cell;
 }

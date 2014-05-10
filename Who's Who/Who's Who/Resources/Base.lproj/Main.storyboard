@@ -65,6 +65,7 @@
                                 <connections>
                                     <outlet property="nameLabel" destination="Seq-UE-yDl" id="emI-X2-5GE"/>
                                     <outlet property="positionLabel" destination="rQ7-Ss-hjz" id="o7m-gP-Che"/>
+                                    <outlet property="profileImageView" destination="2G5-aK-alE" id="uVD-M4-ouv"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
