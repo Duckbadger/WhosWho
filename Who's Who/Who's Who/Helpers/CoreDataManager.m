@@ -36,7 +36,9 @@
 {
 	if (!_persistentStoreCoordinator)
 	{
-		NSURL *storeURL = [NSURL URLWithString:[NSString stringWithFormat:@"WhosWho.sqlite"]];
+		NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+
+		NSURL *storeURL = [documentsURL URLByAppendingPathComponent:[NSString stringWithFormat:@"WhosWho.sqlite"]];
 		
 		NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
 		
