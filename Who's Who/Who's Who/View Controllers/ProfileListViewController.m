@@ -90,9 +90,6 @@
 		cell.profileImageView.image = [profile getCachedSmallImage];
 	}
 	
-	
-
-	
     return cell;
 }
 
