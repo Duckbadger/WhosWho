@@ -98,6 +98,15 @@ typedef enum
 			UIImageView *imageView = (UIImageView *)[cell viewWithTag:kTagImage];
 			imageView.image = [self.profile getCachedFullImage];
 			
+			imageView.layer.cornerRadius = 105.0;
+			imageView.layer.masksToBounds = YES;
+			
+			imageView.layer.borderColor = [UIColor colorWithRed:255.0/255
+														   green:68.0/255
+															blue:0.0/255
+														   alpha:1.0].CGColor;
+			imageView.layer.borderWidth = 5.0;
+			
 			break;
 		}
 		case ProfileRowPosition:
