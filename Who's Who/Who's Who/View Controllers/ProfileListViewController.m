@@ -71,7 +71,7 @@
 	
 	// If we have no image, we need to download it, update the collection view after
 	// Else, we already have the data so just retrieve the data
-	if (profile.imageData == nil)
+	if ([profile hasCachedImage])
 	{
 		cell.profileImageView.image = nil;
 		
@@ -87,7 +87,7 @@
 	}
 	else
 	{
-		cell.profileImageView.image = [profile getCachedImage];
+		cell.profileImageView.image = [profile getCachedSmallImage];
 	}
 	
 	

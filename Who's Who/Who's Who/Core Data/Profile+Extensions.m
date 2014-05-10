@@ -10,6 +10,11 @@
 
 @implementation Profile (Extensions)
 
+- (BOOL)hasCachedImage
+{
+	return (self.fullImageData && self.smallImageData);
+}
+
 - (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock
 {
 	NSURL *url = [NSURL URLWithString:self.imageString];
@@ -18,16 +23,17 @@
 	dispatch_async(downloadQueue, ^{
 		NSData *imageData = [NSData dataWithContentsOfURL:url];
 		
-		self.imageData = imageData;
+		self.fullImageData = imageData;
+		self.smallImageData = imageData;
 		
 		UIImage *image = [UIImage imageWithData:imageData];
 		completionBlock(image);
 	});
 }
 
-- (UIImage *)getCachedImage
+- (UIImage *)getCachedSmallImage
 {
-	return [UIImage imageWithData:self.imageData];
+	return [UIImage imageWithData:self.smallImageData];
 }
 
 @end
