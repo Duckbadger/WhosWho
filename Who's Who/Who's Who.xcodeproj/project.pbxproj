@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F2B5C0A113B462A893D16C0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D93049FE78D42418BE84273 /* libPods.a */; };
-		BE1E604E191E7BC60037C242 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E604D191E7BC60037C242 /* HTMLParser.m */; };
+		BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */; };
 		BEF25007191E4C950063374F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25006191E4C950063374F /* Foundation.framework */; };
 		BEF25009191E4C950063374F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25008191E4C950063374F /* CoreGraphics.framework */; };
 		BEF2500B191E4C950063374F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF2500A191E4C950063374F /* UIKit.framework */; };
@@ -38,8 +38,8 @@
 /* Begin PBXFileReference section */
 		4D93049FE78D42418BE84273 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B10B7415DE549668EB4D579 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		BE1E604C191E7BC60037C242 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLParser.h; path = "Who's Who/Helpers/HTMLParser.h"; sourceTree = SOURCE_ROOT; };
-		BE1E604D191E7BC60037C242 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = "Who's Who/Helpers/HTMLParser.m"; sourceTree = SOURCE_ROOT; };
+		BE1E604F191E7E870037C242 /* AppBusinessProfilesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppBusinessProfilesFetcher.h; sourceTree = "<group>"; };
+		BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppBusinessProfilesFetcher.m; sourceTree = "<group>"; };
 		BEF25003191E4C950063374F /* Who's Who.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Who's Who.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF25006191E4C950063374F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEF25008191E4C950063374F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -89,8 +89,8 @@
 		BE1E604B191E7BB90037C242 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				BE1E604C191E7BC60037C242 /* HTMLParser.h */,
-				BE1E604D191E7BC60037C242 /* HTMLParser.m */,
+				BE1E604F191E7E870037C242 /* AppBusinessProfilesFetcher.h */,
+				BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -320,9 +320,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEF25017191E4C960063374F /* AppDelegate.m in Sources */,
-				BE1E604E191E7BC60037C242 /* HTMLParser.m in Sources */,
 				BEF25013191E4C960063374F /* main.m in Sources */,
 				BEF25045191E60B00063374F /* ProfileListViewController.m in Sources */,
+				BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
