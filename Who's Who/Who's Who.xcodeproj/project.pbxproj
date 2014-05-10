@@ -12,10 +12,11 @@
 		BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6053191E8B630037C242 /* CoreDataManager.m */; };
 		BE1E6056191E8D8A0037C242 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1E6055191E8D8A0037C242 /* CoreData.framework */; };
 		BE1E605A191E8F440037C242 /* WhosWho.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6058191E8F440037C242 /* WhosWho.xcdatamodeld */; };
+		BE1E605D191E8FE70037C242 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E605C191E8FE70037C242 /* Profile.m */; };
 		BE1E6060191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E605F191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.m */; };
 		BE1E6066191EAE4C0037C242 /* ProfilePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6065191EAE4C0037C242 /* ProfilePreviewCell.m */; };
 		BEC31B91191EB19F004C3317 /* Profile+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B90191EB19F004C3317 /* Profile+Extensions.m */; };
-		BEC31B94191EBFF3004C3317 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B93191EBFF3004C3317 /* Profile.m */; };
+		BEC31B9A191ED432004C3317 /* ProfileDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B99191ED432004C3317 /* ProfileDetailTableViewController.m */; };
 		BEF25007191E4C950063374F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25006191E4C950063374F /* Foundation.framework */; };
 		BEF25009191E4C950063374F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25008191E4C950063374F /* CoreGraphics.framework */; };
 		BEF2500B191E4C950063374F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF2500A191E4C950063374F /* UIKit.framework */; };
@@ -51,14 +52,16 @@
 		BE1E6053191E8B630037C242 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		BE1E6055191E8D8A0037C242 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		BE1E6059191E8F440037C242 /* WhosWho.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhosWho.xcdatamodel; sourceTree = "<group>"; };
+		BE1E605B191E8FE70037C242 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		BE1E605C191E8FE70037C242 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		BE1E605E191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+CoreDataManagerExtensions.h"; sourceTree = "<group>"; };
 		BE1E605F191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+CoreDataManagerExtensions.m"; sourceTree = "<group>"; };
 		BE1E6064191EAE4C0037C242 /* ProfilePreviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfilePreviewCell.h; sourceTree = "<group>"; };
 		BE1E6065191EAE4C0037C242 /* ProfilePreviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfilePreviewCell.m; sourceTree = "<group>"; };
 		BEC31B8F191EB19F004C3317 /* Profile+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Profile+Extensions.h"; sourceTree = "<group>"; };
 		BEC31B90191EB19F004C3317 /* Profile+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Profile+Extensions.m"; sourceTree = "<group>"; };
-		BEC31B92191EBFF3004C3317 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
-		BEC31B93191EBFF3004C3317 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
+		BEC31B98191ED432004C3317 /* ProfileDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileDetailTableViewController.h; sourceTree = "<group>"; };
+		BEC31B99191ED432004C3317 /* ProfileDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileDetailTableViewController.m; sourceTree = "<group>"; };
 		BEF25003191E4C950063374F /* Who's Who.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Who's Who.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF25006191E4C950063374F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEF25008191E4C950063374F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -125,10 +128,10 @@
 			isa = PBXGroup;
 			children = (
 				BE1E6058191E8F440037C242 /* WhosWho.xcdatamodeld */,
+				BE1E605B191E8FE70037C242 /* Profile.h */,
+				BE1E605C191E8FE70037C242 /* Profile.m */,
 				BEC31B8F191EB19F004C3317 /* Profile+Extensions.h */,
 				BEC31B90191EB19F004C3317 /* Profile+Extensions.m */,
-				BEC31B92191EBFF3004C3317 /* Profile.h */,
-				BEC31B93191EBFF3004C3317 /* Profile.m */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -223,6 +226,8 @@
 			children = (
 				BEF25043191E60B00063374F /* ProfileListViewController.h */,
 				BEF25044191E60B00063374F /* ProfileListViewController.m */,
+				BEC31B98191ED432004C3317 /* ProfileDetailTableViewController.h */,
+				BEC31B99191ED432004C3317 /* ProfileDetailTableViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -360,14 +365,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEF25017191E4C960063374F /* AppDelegate.m in Sources */,
-				BEC31B94191EBFF3004C3317 /* Profile.m in Sources */,
 				BEC31B91191EB19F004C3317 /* Profile+Extensions.m in Sources */,
 				BEF25013191E4C960063374F /* main.m in Sources */,
 				BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */,
+				BEC31B9A191ED432004C3317 /* ProfileDetailTableViewController.m in Sources */,
 				BEF25045191E60B00063374F /* ProfileListViewController.m in Sources */,
 				BE1E6060191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.m in Sources */,
 				BE1E6066191EAE4C0037C242 /* ProfilePreviewCell.m in Sources */,
 				BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */,
+				BE1E605D191E8FE70037C242 /* Profile.m in Sources */,
 				BE1E605A191E8F440037C242 /* WhosWho.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

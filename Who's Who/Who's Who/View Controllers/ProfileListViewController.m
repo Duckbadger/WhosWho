@@ -11,6 +11,7 @@
 #import "ProfilePreviewCell.h"
 #import "AppBusinessProfilesFetcher.h"
 #import "Profile+Extensions.h"
+#import "ProfileDetailTableViewController.h"
 
 @interface ProfileListViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -34,30 +35,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-	self.refreshControl = [[UIRefreshControl alloc] init];
-
-	self.collectionView.alwaysBounceVertical = YES;
 	
 	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
 	self.coreDataManager = appDel.coreDataManager;
-	
 	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
 	
+	self.refreshControl = [[UIRefreshControl alloc] init];
 	[self.refreshControl addTarget:self action:@selector(startRefresh)
-			 forControlEvents:UIControlEventValueChanged];
+				  forControlEvents:UIControlEventValueChanged];
 	[self.collectionView addSubview:self.refreshControl];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
-
+	
+	self.collectionView.alwaysBounceVertical = YES;
+	
 	[self.refreshControl beginRefreshing];
 	[self.collectionView setContentOffset:CGPointMake(0, self.collectionView.contentOffset.y-self.refreshControl.frame.size.height) animated:YES];
 	
@@ -70,6 +59,18 @@
 			[self.refreshControl endRefreshing];
 		});
 	});
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+
+	
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,6 +132,25 @@
 	}
 	
     return cell;
+}
+
+#pragma mark - Collection View Delegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	[self performSegueWithIdentifier:@"segueDetail" sender:indexPath];
+}
+
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	if ([segue.identifier isEqualToString:@"segueDetail"])
+	{
+		NSIndexPath *indexPath = (NSIndexPath *)sender;
+		Profile *profile = self.profileArray[indexPath.row];
+		
+		ProfileDetailTableViewController *detailVC = segue.destinationViewController;
+		detailVC.profile = profile;
+	}
 }
 
 @end
