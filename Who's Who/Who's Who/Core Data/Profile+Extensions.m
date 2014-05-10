@@ -16,24 +16,18 @@
 	
 	if (self.imageData == nil)
 	{
-		NSLog(@"nil");
-		//    dispatch_queue_t callerQueue = dispatch_get_current_queue();
 		dispatch_queue_t downloadQueue = dispatch_queue_create("imageQueue", NULL);
 		dispatch_async(downloadQueue, ^{
 			NSData *imageData = [NSData dataWithContentsOfURL:url];
 			
 			self.imageData = imageData;
 			
-			NSLog(@"downloaded");
 			UIImage *image = [UIImage imageWithData:imageData];
-			//        dispatch_async(callerQueue, ^{
             completionBlock(image);
-			//        });
 		});
 	}
 	else
 	{
-		NSLog(@"exists");
 		UIImage *image = [UIImage imageWithData:self.imageData];
 		completionBlock(image);
 	}

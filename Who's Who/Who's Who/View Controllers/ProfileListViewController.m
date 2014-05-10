@@ -69,6 +69,8 @@
 	cell.nameLabel.text = profile.name;
 	cell.positionLabel.text = profile.position;
 	
+	// If we have no image, we need to download it, update the collection view after
+	// Else, we already have the data so just retrieve the data
 	if (profile.imageData == nil)
 	{
 		cell.profileImageView.image = nil;
@@ -81,8 +83,6 @@
 				
 				[collectionView reloadItemsAtIndexPaths:@[indexPath]];
 			});
-						   
-			NSLog(@"%@", indexPath);
 		}];
 	}
 	else
