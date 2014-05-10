@@ -20,4 +20,9 @@
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:context];
 }
 
++ (NSFetchRequest *)fetchRequest
+{
+    return [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+}
+
 @end
