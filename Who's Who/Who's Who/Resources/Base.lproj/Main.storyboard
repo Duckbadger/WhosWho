@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qxi-qW-Ibq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qxi-qW-Ibq">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -101,16 +101,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="215"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="200" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GYZ-DG-T8v">
+                                                <imageView userInteractionEnabled="NO" tag="200" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GYZ-DG-T8v">
                                                     <rect key="frame" x="55" y="5" width="210" height="210"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="210" id="AQp-ur-bNX"/>
+                                                        <constraint firstAttribute="width" constant="210" id="o0C-67-0XR"/>
+                                                    </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="GYZ-DG-T8v" firstAttribute="top" secondItem="L2i-rb-NZS" secondAttribute="top" constant="5" id="5Jc-xX-vSW"/>
-                                                <constraint firstAttribute="bottom" secondItem="GYZ-DG-T8v" secondAttribute="bottom" id="6ak-Q7-wO7"/>
-                                                <constraint firstItem="GYZ-DG-T8v" firstAttribute="leading" secondItem="L2i-rb-NZS" secondAttribute="leading" constant="55" id="PcX-vE-bcx"/>
-                                                <constraint firstAttribute="trailing" secondItem="GYZ-DG-T8v" secondAttribute="trailing" constant="55" id="uhG-gg-z3A"/>
+                                                <constraint firstAttribute="centerX" secondItem="GYZ-DG-T8v" secondAttribute="centerX" id="A4q-MH-cdF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
