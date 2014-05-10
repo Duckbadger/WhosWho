@@ -8,6 +8,13 @@
 
 #import "CoreDataManager.h"
 
+@interface CoreDataManager ()
+
+@property (strong, nonatomic) NSString *storeType;
+@property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+
+@end
+
 @implementation CoreDataManager
 
 - (id)initWithStoreType:(NSString *)storeType managedObjectModel:(NSManagedObjectModel *)managedObjectModel
@@ -16,7 +23,8 @@
  
 	if (self)
 	{
-		
+		self.storeType = storeType;
+		self.managedObjectModel = managedObjectModel;
 	}
     return self;
 }
