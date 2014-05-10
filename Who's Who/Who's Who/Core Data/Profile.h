@@ -12,11 +12,12 @@
 
 @interface Profile : NSManagedObject
 
+@property (nonatomic, retain) NSString * biography;
+@property (nonatomic, retain) NSData * fullImageData;
+@property (nonatomic, retain) NSString * imageString;
+@property (nonatomic, retain) NSDate * lastModified;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * position;
-@property (nonatomic, retain) NSString * biography;
-@property (nonatomic, retain) NSString * imageString;
-@property (nonatomic, retain) NSData * imageData;
-@property (nonatomic, retain) NSDate * lastModified;
+@property (nonatomic, retain) NSData * smallImageData;
 
 @end

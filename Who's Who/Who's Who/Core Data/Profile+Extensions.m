@@ -10,6 +10,11 @@
 
 @implementation Profile (Extensions)
 
+- (BOOL)hasCachedImage
+{
+	return (self.fullImageData && self.smallImageData);
+}
+
 - (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock
 {
 	NSURL *url = [NSURL URLWithString:self.imageString];
@@ -18,16 +23,36 @@
 	dispatch_async(downloadQueue, ^{
 		NSData *imageData = [NSData dataWithContentsOfURL:url];
 		
-		self.imageData = imageData;
+		self.fullImageData = imageData;
+		self.smallImageData = UIImageJPEGRepresentation([Profile resizedImageWithData:imageData], 0.5);
 		
 		UIImage *image = [UIImage imageWithData:imageData];
 		completionBlock(image);
 	});
 }
 
-- (UIImage *)getCachedImage
+- (UIImage *)getCachedSmallImage
 {
-	return [UIImage imageWithData:self.imageData];
+	return [UIImage imageWithData:self.smallImageData];
+}
+
+- (UIImage *)getCachedFullImage
+{
+	return [UIImage imageWithData:self.fullImageData];
+}
+
+
++ (UIImage *)resizedImageWithData:(NSData *)data
+{
+	UIImage *image = [UIImage imageWithData:data];
+	CGSize newSize = CGSizeMake(120, 120);
+	
+	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+	
+	return newImage;
 }
 
 @end

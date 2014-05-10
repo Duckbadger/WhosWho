@@ -10,7 +10,8 @@
 
 @interface Profile (Extensions)
 
+- (BOOL)hasCachedImage;
 - (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock;
-- (UIImage *)getCachedImage;
+- (UIImage *)getCachedSmallImage;
 
 @end

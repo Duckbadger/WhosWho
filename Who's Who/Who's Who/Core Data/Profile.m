@@ -11,11 +11,12 @@
 
 @implementation Profile
 
+@dynamic biography;
+@dynamic fullImageData;
+@dynamic imageString;
+@dynamic lastModified;
 @dynamic name;
 @dynamic position;
-@dynamic biography;
-@dynamic imageString;
-@dynamic imageData;
-@dynamic lastModified;
+@dynamic smallImageData;
 
 @end
