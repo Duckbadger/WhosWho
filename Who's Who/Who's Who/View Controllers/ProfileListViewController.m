@@ -59,6 +59,11 @@
 {
 	ProfilePreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
 
+	// Populate the cell with info from the profile
+	Profile *profile = self.profileArray[indexPath.row];
+	cell.nameLabel.text = profile.name;
+	cell.positionLabel.text = profile.position;
+	
     return cell;
 }
 
