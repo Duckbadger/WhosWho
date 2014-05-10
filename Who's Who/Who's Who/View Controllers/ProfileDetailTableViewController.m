@@ -14,7 +14,6 @@
 typedef enum
 {
 	ProfileRowImage = 0,
-	ProfileRowName,
 	ProfileRowPosition,
 	ProfileRowBio,
 } ProfileRow;
@@ -38,11 +37,7 @@ typedef enum
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.title = self.profile.name;
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,11 +99,6 @@ typedef enum
 			UIImageView *imageView = (UIImageView *)[cell viewWithTag:kTagImage];
 			imageView.image = [self.profile getCachedFullImage];
 			
-			break;
-		}
-		case ProfileRowName:
-		{
-			cell.textLabel.text = self.profile.name;
 			break;
 		}
 		case ProfileRowPosition:
