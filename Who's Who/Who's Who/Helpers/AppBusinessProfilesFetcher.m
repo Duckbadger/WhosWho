@@ -60,7 +60,12 @@
 		NSString *userProfileXpathQueryString = @"//div[@class='col col2']";
 		NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
 		NSDate *lastModified = [NSDate date];
-				
+		
+		//-----
+		// DATA IMPORT
+		//-----
+		NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
+		
 		/*
 		 *	Note - Structure for the profileElement is:
 		 *	[0]	Image
@@ -120,28 +125,37 @@
 		}
 		
 		// Save the context
-		[mainContext save:nil];
+		[privateContext save:nil];
 		
+		// End DATA IMPORT
+		//-----
+		
+		//-----
 		// Delete old profiles
 		// Anything not updated was therefore not on the website anymore
 		// Check for anything below the last modified date
 		// Only do this if the url was valid, i.e. got userProfileElements
 		if (userProfilesElements.count > 0)
 		{
-			NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
-			oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
-			NSArray *oldProfileArray = [mainContext executeFetchRequest:oldProfilesFetchRequest error:nil];
-			for (Profile *profile in oldProfileArray)
-			{
-				[mainContext deleteObject:profile];
-			}
-			[mainContext save:nil];
+			[self deleteOldProfilesWithContext:mainContext andLastModifiedData:lastModified];
 		}
 	}
 	
 	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
 	
 	return profileArray;
+}
+
++ (void)deleteOldProfilesWithContext:(NSManagedObjectContext *)context andLastModifiedData:(NSDate *)lastModified
+{
+	NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
+	oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
+	NSArray *oldProfileArray = [context executeFetchRequest:oldProfilesFetchRequest error:nil];
+	for (Profile *profile in oldProfileArray)
+	{
+		[context deleteObject:profile];
+	}
+	[context save:nil];
 }
 
 @end

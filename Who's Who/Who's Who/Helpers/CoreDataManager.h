@@ -15,5 +15,6 @@
 @property (strong, nonatomic, readonly) NSManagedObjectContext *mainContext;
 
 - (id)initWithStoreType:(NSString *)storeType managedObjectModel:(NSManagedObjectModel *)managedObjectModel;
+- (NSManagedObjectContext*)createPrivateContext;
 
 @end
