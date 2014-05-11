@@ -4,7 +4,7 @@ WhosWho
 Mobile app that provides easy access to biographies and pictures of it's employees.
 
 ##Compatibility##
-Runs on iOS7+ on iPhone.
+Runs on iOS7+ on iPhone and iPad.
 
 
 ##Level 1##
