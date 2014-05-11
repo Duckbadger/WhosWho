@@ -52,15 +52,7 @@
 	[self.refreshControl beginRefreshing];
 	[self.collectionView setContentOffset:CGPointMake(0, self.collectionView.contentOffset.y-self.refreshControl.frame.size.height) animated:YES];
 	
-	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
-		
-		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.collectionView reloadData];
-			[self.refreshControl endRefreshing];
-		});
-	});
+	[self retrieveProfiles];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,9 +64,15 @@
 #pragma mark - Class Methods
 - (void)startRefresh
 {
+	[self retrieveProfiles];
+}
+
+- (void)retrieveProfiles
+{
 	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
 		
 		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
+		NSLog(@"retrieved");
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.collectionView reloadData];
