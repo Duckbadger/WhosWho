@@ -27,10 +27,35 @@
 	{
 		self.storeType = storeType;
 		self.managedObjectModel = managedObjectModel;
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(contextSaveNotificationReceived:)
+													 name:NSManagedObjectContextDidSaveNotification
+												   object:nil];
 	}
     return self;
 }
 
+- (void)contextSaveNotificationReceived:(NSNotification *)notification
+{
+	// Retrieve the context from the notification
+	NSManagedObjectContext *managedObjectContext = notification.object;
+	
+	// If the context is a private context, merge the changes into the main context
+	if (managedObjectContext.concurrencyType == NSPrivateQueueConcurrencyType)
+	{
+		
+		for (NSManagedObject *object in notification.userInfo[NSUpdatedObjectsKey])
+		{
+			[[managedObjectContext objectWithID:object.objectID] willAccessValueForKey:nil];
+		}
+		
+		[managedObjectContext performBlock:^{
+			[self.mainContext mergeChangesFromContextDidSaveNotification:notification];
+		}];
+		
+	}
+}
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
@@ -74,6 +99,16 @@
     }
     
     return _mainContext;
+}
+
+/*
+ *	Creates and returns a new private NSManagedObjectContext object
+ */
+- (NSManagedObjectContext*)createPrivateContext
+{
+    NSManagedObjectContext *privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    privateContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    return privateContext;
 }
 
 @end
