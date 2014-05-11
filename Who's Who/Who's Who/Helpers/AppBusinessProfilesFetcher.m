@@ -64,6 +64,7 @@
 		//-----
 		// DATA IMPORT
 		//-----
+//		NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
 		
 		/*
 		 *	Note - Structure for the profileElement is:
