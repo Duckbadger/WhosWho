@@ -7,7 +7,9 @@
 //
 
 #import "ProfileDetailTableViewController.h"
-#import "Profile+Extensions.h"
+#import "Profile+Extensions.h"	
+#import "Photo.h"
+#import "PhotoManager.h"
 
 #define kTagImage	200
 
@@ -94,8 +96,36 @@ typedef enum
 	{
 		case ProfileRowImage:
 		{
+			Photo *mainPhoto = [self.profile mainPhoto];
+			
 			UIImageView *imageView = (UIImageView *)[cell viewWithTag:kTagImage];
-			imageView.image = [self.profile getCachedFullImage];
+			
+			// If we have no image, we need to download it, update the collection view after
+			// Else, we already have the data so just retrieve the data
+			if (!mainPhoto.fullImageURL)
+			{
+				imageView.image = nil;
+				
+				__weak Photo *weakPhoto = mainPhoto;
+				__weak NSIndexPath *weakIndexPath = indexPath;
+				[PhotoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+								 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
+									 
+									 weakPhoto.fullImageURL = fullImagePath;
+									 weakPhoto.smallImageURL = smallImagePath;
+									 
+									 [weakPhoto.managedObjectContext save:nil];
+									 
+									 dispatch_async(dispatch_get_main_queue(), ^{
+										 [tableView reloadRowsAtIndexPaths:@[weakIndexPath]
+														  withRowAnimation:UITableViewRowAnimationAutomatic];
+									 });
+								 }];
+			}
+			else
+			{
+				imageView.image = [PhotoManager imageWithFilePath:mainPhoto.fullImageURL];
+			}
 			
 			imageView.layer.cornerRadius = 105.0;
 			imageView.layer.masksToBounds = YES;

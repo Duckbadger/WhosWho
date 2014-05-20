@@ -10,49 +10,16 @@
 
 @implementation Profile (Extensions)
 
-- (BOOL)hasCachedImage
+/*
+ *	Gets the photo with an index of 0, which is the main photo
+ *	Index added for now due to possible extensions in future of multiple photos
+ */
+- (Photo *)mainPhoto
 {
-	return (self.fullImageData && self.smallImageData);
-}
-
-- (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock
-{
-	NSURL *url = [NSURL URLWithString:self.imageString];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"index == %ld", 0];
+	NSSet *filteredSet = [self.photos filteredSetUsingPredicate:predicate];
 	
-	dispatch_queue_t downloadQueue = dispatch_queue_create("imageQueue", NULL);
-	dispatch_async(downloadQueue, ^{
-		NSData *imageData = [NSData dataWithContentsOfURL:url];
-		
-		self.fullImageData = imageData;
-		self.smallImageData = UIImageJPEGRepresentation([Profile resizedImageWithData:imageData], 0.5);
-		
-		UIImage *image = [UIImage imageWithData:imageData];
-		completionBlock(image);
-	});
-}
-
-- (UIImage *)getCachedSmallImage
-{
-	return [UIImage imageWithData:self.smallImageData];
-}
-
-- (UIImage *)getCachedFullImage
-{
-	return [UIImage imageWithData:self.fullImageData];
-}
-
-
-+ (UIImage *)resizedImageWithData:(NSData *)data
-{
-	UIImage *image = [UIImage imageWithData:data];
-	CGSize newSize = CGSizeMake(150, 150);
-	
-	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-	
-	return newImage;
+	return (filteredSet.count > 0) ? filteredSet.anyObject : nil;
 }
 
 @end
