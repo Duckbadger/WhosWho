@@ -51,13 +51,11 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return [super numberOfSectionsInTableView:tableView];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     return [super tableView:tableView numberOfRowsInSection:section];
 }
 
@@ -67,6 +65,7 @@ typedef enum
 	{
 		case ProfileRowBio:
 		{
+			// Have to work out the height dynamically for the cell based on the biography length
 			UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
 			UILabel *textLabel = cell.textLabel;
 			CGSize maximumLabelSize = CGSizeMake(textLabel.frame.size.width, FLT_MAX);
@@ -100,7 +99,6 @@ typedef enum
 			
 			imageView.layer.cornerRadius = 105.0;
 			imageView.layer.masksToBounds = YES;
-			
 			imageView.layer.borderColor = [UIColor colorWithRed:255.0/255
 														   green:68.0/255
 															blue:0.0/255
