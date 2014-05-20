@@ -14,17 +14,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+
     }
     return self;
 }
 
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)awakeFromNib
 {
-	self.profileImageView.layer.cornerRadius = 75.0;
+	self.profileImageView.layer.cornerRadius = CGRectGetWidth(self.profileImageView.frame) / 2;
 	self.profileImageView.layer.masksToBounds = YES;
 }
 
