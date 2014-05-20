@@ -10,37 +10,59 @@
 
 @implementation PhotoManager
 
-- (BOOL)hasCachedImage
++ (NSString *)documentPathWithFileName:(NSString *)fileName
 {
-	return (self.fullImageData && self.smallImageData);
+	NSString *documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+	return [documentsPath stringByAppendingPathComponent:fileName];
 }
 
-- (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock
++ (BOOL)fileExistsWithFileName:(NSString *)fileName
 {
-	NSURL *url = [NSURL URLWithString:self.imageString];
+	NSString *fullPath = [PhotoManager documentPathWithFileName:fileName];
+	return [[NSFileManager defaultManager] fileExistsAtPath:fullPath];
+}
+
++ (void)imageWithSourceURL:(NSURL *)url
+			 completionBlock:(void (^)(NSString *fullImagePath,
+									   NSString *smallImagePath))completionBlock
+{
+	NSParameterAssert(completionBlock);
 	
-	dispatch_queue_t downloadQueue = dispatch_queue_create("imageQueue", NULL);
+	dispatch_queue_t downloadQueue = dispatch_queue_create(NULL, NULL);
+	
 	dispatch_async(downloadQueue, ^{
 		NSData *imageData = [NSData dataWithContentsOfURL:url];
 		
-		self.fullImageData = imageData;
-		self.smallImageData = UIImageJPEGRepresentation([Profile resizedImageWithData:imageData], 0.5);
+		NSData *fullImageData = imageData;
+		NSString *fullImagePath = [NSString stringWithFormat:@"full%@", [[NSUUID UUID] UUIDString]];
+		[PhotoManager saveImageData:fullImageData filePath:fullImagePath];
+		
+		NSData *smallImageData = UIImageJPEGRepresentation([PhotoManager resizedImageWithData:imageData], 0.5);
+		NSString *smallImagePath = [NSString stringWithFormat:@"small%@", [[NSUUID UUID] UUIDString]];
+		[PhotoManager saveImageData:smallImageData filePath:smallImagePath];
 		
 		UIImage *image = [UIImage imageWithData:imageData];
-		completionBlock(image);
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			completionBlock(fullImagePath, smallImagePath);
+		});
 	});
 }
 
-- (UIImage *)getCachedSmallImage
+// Returns success
++ (BOOL)saveImageData:(NSData *)data
+				   filePath:(NSString *)filePath
 {
-	return [UIImage imageWithData:self.smallImageData];
+	NSString *fullPath = [PhotoManager documentPathWithFileName:filePath];
+	NSLog(@"fullPath = %@", fullPath);
+	return [data writeToFile:fullPath atomically:YES];
 }
 
-- (UIImage *)getCachedFullImage
++ (UIImage *)imageWithFilePath:(NSString *)filePath
 {
-	return [UIImage imageWithData:self.fullImageData];
+	NSString *fullPath = [PhotoManager documentPathWithFileName:filePath];
+	return [UIImage imageWithContentsOfFile:fullPath];
 }
-
 
 + (UIImage *)resizedImageWithData:(NSData *)data
 {

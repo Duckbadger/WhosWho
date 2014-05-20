@@ -16,7 +16,7 @@
  */
 - (Photo *)mainPhoto
 {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"index == ", 0];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"index == %ld", 0];
 	NSSet *filteredSet = [self.photos filteredSetUsingPredicate:predicate];
 	
 	return (filteredSet.count > 0) ? filteredSet.anyObject : nil;

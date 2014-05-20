@@ -10,4 +10,11 @@
 
 @interface PhotoManager : NSObject
 
++ (BOOL)fileExistsAtPath:(NSString *)path;
+
++ (void)imageWithSourceURL:(NSURL *)url
+		   completionBlock:(void (^)(NSString *fullImagePath,
+									 NSString *smallImagePath))completionBlock;
++ (UIImage *)imageWithFilePath:(NSString *)filePath;
+
 @end

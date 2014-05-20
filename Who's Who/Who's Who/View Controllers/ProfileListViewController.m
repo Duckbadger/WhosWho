@@ -10,7 +10,9 @@
 #import "ProfileListViewController.h"
 #import "ProfilePreviewCell.h"
 #import "AppBusinessProfilesFetcher.h"
+#import "PhotoManager.h"
 #import "Profile+Extensions.h"
+#import "Photo.h"
 #import "ProfileDetailTableViewController.h"
 
 @interface ProfileListViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -96,26 +98,32 @@
 	Profile *profile = self.profileArray[indexPath.row];
 	cell.nameLabel.text = profile.name;
 	cell.positionLabel.text = profile.position;
-	
+
+	Photo *mainPhoto = [profile mainPhoto];
 	// If we have no image, we need to download it, update the collection view after
 	// Else, we already have the data so just retrieve the data
-	if (![profile hasCachedImage])
+	if (!mainPhoto.smallImageURL)
 	{
 		cell.profileImageView.image = nil;
 		
-		[profile getImageWithBlock:^(UIImage *image) {
-			cell.profileImageView.image = image;
-			
-			[self.coreDataManager.mainContext save:nil];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				[collectionView reloadItemsAtIndexPaths:@[indexPath]];
-			});
-		}];
+		__weak Photo *weakPhoto = mainPhoto;
+		__weak NSIndexPath *weakIndexPath = indexPath;
+		[PhotoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
+							 
+							 weakPhoto.fullImageURL = fullImagePath;
+							 weakPhoto.smallImageURL = smallImagePath;
+							 
+							 [self.coreDataManager.mainContext save:nil];
+							 
+							 dispatch_async(dispatch_get_main_queue(), ^{
+								 [collectionView reloadItemsAtIndexPaths:@[weakIndexPath]];
+							 });
+						 }];
 	}
 	else
 	{
-		cell.profileImageView.image = [profile getCachedSmallImage];
+		cell.profileImageView.image = [PhotoManager imageWithFilePath:mainPhoto.smallImageURL];
 	}
 	
     return cell;
