@@ -13,12 +13,10 @@
 @implementation Profile
 
 @dynamic biography;
-@dynamic fullImageData;
 @dynamic imageString;
 @dynamic lastModified;
 @dynamic name;
 @dynamic position;
-@dynamic smallImageData;
 @dynamic photos;
 
 @end

@@ -16,7 +16,7 @@
 		BE1E6066191EAE4C0037C242 /* ProfilePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6065191EAE4C0037C242 /* ProfilePreviewCell.m */; };
 		BE4793D6192BED350080C688 /* PhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793D5192BED350080C688 /* PhotoManager.m */; };
 		BE4793D9192BEE870080C688 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793D8192BEE870080C688 /* Photo.m */; };
-		BE4793DC192BEE880080C688 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793DB192BEE880080C688 /* Profile.m */; };
+		BE4793DF192BEF370080C688 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793DE192BEF370080C688 /* Profile.m */; };
 		BEC31B91191EB19F004C3317 /* Profile+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B90191EB19F004C3317 /* Profile+Extensions.m */; };
 		BEC31B9A191ED432004C3317 /* ProfileDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B99191ED432004C3317 /* ProfileDetailTableViewController.m */; };
 		BEF25007191E4C950063374F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25006191E4C950063374F /* Foundation.framework */; };
@@ -62,8 +62,8 @@
 		BE4793D5192BED350080C688 /* PhotoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoManager.m; sourceTree = "<group>"; };
 		BE4793D7192BEE870080C688 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		BE4793D8192BEE870080C688 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
-		BE4793DA192BEE880080C688 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
-		BE4793DB192BEE880080C688 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
+		BE4793DD192BEF370080C688 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		BE4793DE192BEF370080C688 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		BEC31B8F191EB19F004C3317 /* Profile+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Profile+Extensions.h"; sourceTree = "<group>"; };
 		BEC31B90191EB19F004C3317 /* Profile+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Profile+Extensions.m"; sourceTree = "<group>"; };
 		BEC31B98191ED432004C3317 /* ProfileDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileDetailTableViewController.h; sourceTree = "<group>"; };
@@ -140,8 +140,8 @@
 				BEC31B90191EB19F004C3317 /* Profile+Extensions.m */,
 				BE4793D7192BEE870080C688 /* Photo.h */,
 				BE4793D8192BEE870080C688 /* Photo.m */,
-				BE4793DA192BEE880080C688 /* Profile.h */,
-				BE4793DB192BEE880080C688 /* Profile.m */,
+				BE4793DD192BEF370080C688 /* Profile.h */,
+				BE4793DE192BEF370080C688 /* Profile.m */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -382,7 +382,7 @@
 				BEC31B9A191ED432004C3317 /* ProfileDetailTableViewController.m in Sources */,
 				BEF25045191E60B00063374F /* ProfileListViewController.m in Sources */,
 				BE1E6060191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.m in Sources */,
-				BE4793DC192BEE880080C688 /* Profile.m in Sources */,
+				BE4793DF192BEF370080C688 /* Profile.m in Sources */,
 				BE1E6066191EAE4C0037C242 /* ProfilePreviewCell.m in Sources */,
 				BE4793D6192BED350080C688 /* PhotoManager.m in Sources */,
 				BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */,
