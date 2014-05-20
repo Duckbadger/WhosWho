@@ -14,7 +14,6 @@
 @interface Profile : NSManagedObject
 
 @property (nonatomic, retain) NSString * biography;
-@property (nonatomic, retain) NSString * imageString;
 @property (nonatomic, retain) NSDate * lastModified;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * position;

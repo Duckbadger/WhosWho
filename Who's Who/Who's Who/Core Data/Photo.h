@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * smallImageURL;
 @property (nonatomic, retain) NSString * fullImageURL;
 @property (nonatomic, retain) NSNumber * index;
+@property (nonatomic, retain) NSString * sourceURL;
 @property (nonatomic, retain) Profile *profile;
 
 @end

@@ -15,6 +15,7 @@
 @dynamic smallImageURL;
 @dynamic fullImageURL;
 @dynamic index;
+@dynamic sourceURL;
 @dynamic profile;
 
 @end

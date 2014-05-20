@@ -13,7 +13,6 @@
 @implementation Profile
 
 @dynamic biography;
-@dynamic imageString;
 @dynamic lastModified;
 @dynamic name;
 @dynamic position;
