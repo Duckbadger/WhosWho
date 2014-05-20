@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "CoreDataManager.h"
 #import "Profile.h"
+#import "Photo.h"
 #import <TFHpple.h>
 
 @implementation AppBusinessProfilesFetcher
@@ -120,8 +121,25 @@
 			profile.name = name;
 			profile.position = position;
 			profile.biography = biography;
-			profile.imageString = imageString;
 			profile.lastModified = lastModified;
+			
+			//----
+			// Fill in properties for Photo
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceURL == %@", imageString];
+			NSSet *filteredSet = [profile.photos filteredSetUsingPredicate:predicate];
+			Photo *photo = nil;
+			if (filteredSet.count > 0)
+			{
+				photo = filteredSet.anyObject;
+			}
+			else
+			{
+				photo = [Photo insertInContext:privateContext];
+			}
+			
+			photo.profile = profile;
+			photo.sourceURL = imageString;
+
 		}
 		
 		// Save the context
