@@ -54,7 +54,6 @@
 				   filePath:(NSString *)filePath
 {
 	NSString *fullPath = [PhotoManager documentPathWithFileName:filePath];
-	NSLog(@"fullPath = %@", fullPath);
 	return [data writeToFile:fullPath atomically:YES];
 }
 
