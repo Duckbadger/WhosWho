@@ -22,4 +22,10 @@
 	return (filteredSet.count > 0) ? filteredSet.anyObject : nil;
 }
 
++ (Profile *)updateWithDictionary:(NSDictionary *)dictionary
+{
+	//Note use KZPropertyMapper
+	return nil;
+}
+
 @end

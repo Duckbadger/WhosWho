@@ -37,7 +37,7 @@
 	// First get the html data from the TAB profiles page
 	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.theappbusiness.com/our-team/"]];
 	
-	NSArray *modifiedObjects = [AppBusinessProfilesFetcher parseData:data];
+	NSSet *modifiedObjects = [AppBusinessProfilesFetcher parseData:data];
 	
 		
 	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
@@ -47,10 +47,12 @@
 
 /*
  *	Parses the HTML data and extracts the user data
- *	Returns an array of all the modified Profile objects
+ *	Returns a set of all the modified Profile objects
  */
-+ (NSArray *)parseData:(NSData *)data
++ (NSSet *)parseData:(NSData *)data
 {
+	NSMutableSet *modifiedObjects = nil;
+	
 	// If we have any data to parse, go ahead and parse it.
 	if (data)
 	{
@@ -175,11 +177,11 @@
 			[self deleteOldProfilesWithContext:mainContext andLastModifiedData:lastModified];
 		}
 		
-		return nil;
+		return modifiedObjects;
 	}
 	else
 	{
-		return nil;
+		return modifiedObjects;
 	}
 }
 
