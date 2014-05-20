@@ -112,7 +112,7 @@
 			}
 			else
 			{
-				profile = [Profile insertInContext:mainContext];
+				profile = [Profile insertInContext:privateContext];
 			}
 			
 			//----
