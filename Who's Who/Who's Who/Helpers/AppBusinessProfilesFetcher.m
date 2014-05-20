@@ -37,9 +37,26 @@
 	// First get the html data from the TAB profiles page
 	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.theappbusiness.com/our-team/"]];
 	
+	NSArray *modifiedObjects = [AppBusinessProfilesFetcher parseData:data];
+	
+		
+	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
+	
+	return profileArray;
+}
+
+/*
+ *	Parses the HTML data and extracts the user data
+ *	Returns an array of all the modified Profile objects
+ */
++ (NSArray *)parseData:(NSData *)data
+{
 	// If we have any data to parse, go ahead and parse it.
 	if (data)
 	{
+		AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+		NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
+
 		// HTML parser
 		TFHpple *htmlParser = [TFHpple hppleWithHTMLData:data];
 		
@@ -56,7 +73,7 @@
 		 *					<p> // Position
 		 *					<p class="user-description"> // Bio
 		 */
-		
+				
 		// Get all the profiles
 		NSString *userProfileXpathQueryString = @"//div[@class='col col2']";
 		NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
@@ -139,7 +156,7 @@
 			
 			photo.profile = profile;
 			photo.sourceURL = imageString;
-
+			
 		}
 		
 		// Save the context
@@ -157,11 +174,13 @@
 		{
 			[self deleteOldProfilesWithContext:mainContext andLastModifiedData:lastModified];
 		}
+		
+		return nil;
 	}
-	
-	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
-	
-	return profileArray;
+	else
+	{
+		return nil;
+	}
 }
 
 + (void)deleteOldProfilesWithContext:(NSManagedObjectContext *)context andLastModifiedData:(NSDate *)lastModified
