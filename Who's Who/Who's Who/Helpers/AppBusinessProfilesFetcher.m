@@ -9,21 +9,17 @@
 #import "AppBusinessProfilesFetcher.h"
 #import "AppDelegate.h"
 #import "CoreDataManager.h"
-#import "Profile.h"
-#import "Photo.h"
+#import "Profile+Extensions.h"
+#import "Photo+Extensions.h"
 #import <TFHpple.h>
 
 @implementation AppBusinessProfilesFetcher
 
-+ (NSArray *)fetchCachedProfiles
++ (NSArray *)fetchCachedProfilesInContext:(NSManagedObjectContext *)context
 {
-	// Retrieve the main context from the core data manager
-	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
-	
 	// Retrieve the objects to return
 	NSFetchRequest *fetchRequest = [Profile fetchRequest];
-	NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
+	NSArray *profileArray = [context executeFetchRequest:fetchRequest error:nil];
 	
 	return profileArray;
 }
@@ -33,9 +29,29 @@
 	// Retrieve the main context from the core data manager
 	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
 	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
+	NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
 	
 	// First get the html data from the TAB profiles page
 	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.theappbusiness.com/our-team/"]];
+	
+	NSSet *modifiedObjects = [AppBusinessProfilesFetcher parseData:data inContext:privateContext];
+	
+	[AppBusinessProfilesFetcher deleteOldProfilesWithModifiedProfiles:modifiedObjects inContext:privateContext];
+	
+	[privateContext save:nil];
+	
+	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfilesInContext:mainContext];
+	
+	return profileArray;
+}
+
+/*
+ *	Parses the HTML data and extracts the user data
+ *	Returns a set of all the modified Profile objects
+ */
++ (NSSet *)parseData:(NSData *)data inContext:(NSManagedObjectContext *)context
+{
+	NSMutableSet *modifiedObjects = [NSMutableSet new];
 	
 	// If we have any data to parse, go ahead and parse it.
 	if (data)
@@ -56,16 +72,14 @@
 		 *					<p> // Position
 		 *					<p class="user-description"> // Bio
 		 */
-		
+				
 		// Get all the profiles
 		NSString *userProfileXpathQueryString = @"//div[@class='col col2']";
 		NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
-		NSDate *lastModified = [NSDate date];
 		
 		//-----
 		// DATA IMPORT
 		//-----
-		NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
 		
 		/*
 		 *	Note - Structure for the profileElement is:
@@ -76,104 +90,78 @@
 		 */
 		for (TFHppleElement *profileElement in userProfilesElements)
 		{
+			NSMutableDictionary *profileDictionary = [NSMutableDictionary new];
+			NSMutableDictionary *photoDictionary = [NSMutableDictionary new];
+			
 			//----
 			// Name
 			TFHppleElement *hTagElement = profileElement.children[1];
 			TFHppleElement *nameElement = hTagElement.children.firstObject;
-			NSString *name = nameElement.content;
+			NSString *name = (nameElement.content) ?: @"";
+			[profileDictionary setObject:name
+								 forKey:kKeyProfileName];
 			
 			//----
 			// Position
 			TFHppleElement *pTagElement = profileElement.children[2];
 			TFHppleElement *positionElement = pTagElement.children.firstObject;
-			NSString *position = positionElement.content;
+			[profileDictionary setObject:(positionElement.content) ?: [NSNull null]
+								 forKey:kKeyProfilePosition];
 			
 			//----
 			// Bio
 			TFHppleElement *userDescriptionPTagElement = profileElement.children[3];
 			TFHppleElement *bioElement = userDescriptionPTagElement.children.firstObject;
-			NSString *biography = bioElement.content;
+			[profileDictionary setObject:(bioElement.content) ?: [NSNull null]
+								 forKey:kKeyProfileBiography];
 			
 			//----
 			// Image
 			TFHppleElement *srcElement = profileElement.children[0];
 			TFHppleElement *imageElement = srcElement.children.firstObject;
-			NSString *imageString = imageElement.attributes[@"src"];
+			NSString *imageString = (imageElement.attributes[@"src"]) ?: @"";
+			[photoDictionary setObject:imageString
+								  forKey:kKeyPhotoSourceURL];
 			
 			//----
-			// Create new profile or fetch existing one
-			NSFetchRequest *fetchRequest = [Profile fetchRequest];
-			fetchRequest.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
+			// Create new profile or fetch existing one and update
+			Profile *profile = [Profile profileWithName:name inContext:context];
 			
-			Profile *profile = nil;
-			NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
-			if (profileArray.count > 0)
-			{
-				profile = profileArray.firstObject;
-			}
-			else
-			{
-				profile = [Profile insertInContext:privateContext];
-			}
+			[profile updateWithDictionary:profileDictionary];
 			
-			//----
-			// Fill in properties for Profile
-			profile.name = name;
-			profile.position = position;
-			profile.biography = biography;
-			profile.lastModified = lastModified;
+			[photoDictionary setObject:profile
+								forKey:kKeyPhotoProfile];
 			
 			//----
 			// Fill in properties for Photo
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceURL == %@", imageString];
-			NSSet *filteredSet = [profile.photos filteredSetUsingPredicate:predicate];
-			Photo *photo = nil;
-			if (filteredSet.count > 0)
-			{
-				photo = filteredSet.anyObject;
-			}
-			else
-			{
-				photo = [Photo insertInContext:privateContext];
-			}
+			Photo *photo = [Photo photoWithSourceURL:imageString inContext:context];
+	
+			[photo updateWithDictionary:photoDictionary];
 			
-			photo.profile = profile;
-			photo.sourceURL = imageString;
-
+			//----
+			// Add the profile to the modified objects set
+			[modifiedObjects addObject:profile];
 		}
-		
-		// Save the context
-		[privateContext save:nil];
 		
 		// End DATA IMPORT
 		//-----
-		
-		//-----
-		// Delete old profiles
-		// Anything not updated was therefore not on the website anymore
-		// Check for anything below the last modified date
-		// Only do this if the url was valid, i.e. got userProfileElements
-		if (userProfilesElements.count > 0)
-		{
-			[self deleteOldProfilesWithContext:mainContext andLastModifiedData:lastModified];
-		}
 	}
 	
-	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
-	
-	return profileArray;
+	return modifiedObjects;
 }
 
-+ (void)deleteOldProfilesWithContext:(NSManagedObjectContext *)context andLastModifiedData:(NSDate *)lastModified
++ (void)deleteOldProfilesWithModifiedProfiles:(NSSet *)modifiedProfiles inContext:(NSManagedObjectContext *)context
 {
-	NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
-	oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
-	NSArray *oldProfileArray = [context executeFetchRequest:oldProfilesFetchRequest error:nil];
-	for (Profile *profile in oldProfileArray)
+	NSFetchRequest *fetchRequest = [Profile fetchRequest];
+	NSArray *originalProfileArray = [context executeFetchRequest:fetchRequest error:nil];
+	NSMutableSet *originalSet = [NSMutableSet setWithArray:originalProfileArray];
+	
+	[originalSet minusSet:modifiedProfiles];
+	
+	for (Profile *oldProfile in originalSet)
 	{
-		[context deleteObject:profile];
+		[context deleteObject:oldProfile];
 	}
-	[context save:nil];
 }
 
 @end

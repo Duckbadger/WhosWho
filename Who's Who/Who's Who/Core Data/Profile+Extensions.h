@@ -8,8 +8,15 @@
 
 #import "Profile.h"
 
+#define kKeyProfileName			@"name"
+#define kKeyProfilePosition		@"position"
+#define kKeyProfileBiography	@"biography"
+
 @interface Profile (Extensions)
 
 - (Photo *)mainPhoto;
++ (Profile *)profileWithName:(NSString *)name
+				   inContext:(NSManagedObjectContext *)context;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end

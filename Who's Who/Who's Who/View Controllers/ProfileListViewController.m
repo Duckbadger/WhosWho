@@ -42,7 +42,7 @@
 	
 	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
 	self.coreDataManager = appDel.coreDataManager;
-	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
+	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfilesInContext:self.coreDataManager.mainContext];
 	
 	self.refreshControl = [[UIRefreshControl alloc] init];
 	[self.refreshControl addTarget:self action:@selector(startRefresh)
