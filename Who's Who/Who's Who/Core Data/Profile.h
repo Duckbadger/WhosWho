@@ -2,7 +2,7 @@
 //  Profile.h
 //  Who's Who
 //
-//  Created by Ken Boucher on 20/05/2014.
+//  Created by Ken Boucher on 21/05/2014.
 //  Copyright (c) 2014 Ken Boucher. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 @interface Profile : NSManagedObject
 
 @property (nonatomic, retain) NSString * biography;
-@property (nonatomic, retain) NSDate * lastModified;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * position;
 @property (nonatomic, retain) NSSet *photos;

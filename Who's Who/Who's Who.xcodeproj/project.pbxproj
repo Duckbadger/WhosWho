@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F2B5C0A113B462A893D16C0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D93049FE78D42418BE84273 /* libPods.a */; };
 		BE1DA54D192D276F00D69C72 /* Photo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1DA54C192D276F00D69C72 /* Photo+Extensions.m */; };
+		BE1DA550192D344A00D69C72 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1DA54F192D344A00D69C72 /* Profile.m */; };
 		BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */; };
 		BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6053191E8B630037C242 /* CoreDataManager.m */; };
 		BE1E6056191E8D8A0037C242 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1E6055191E8D8A0037C242 /* CoreData.framework */; };
@@ -17,7 +18,6 @@
 		BE1E6066191EAE4C0037C242 /* ProfilePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6065191EAE4C0037C242 /* ProfilePreviewCell.m */; };
 		BE4793D6192BED350080C688 /* PhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793D5192BED350080C688 /* PhotoManager.m */; };
 		BE4793E5192BF44B0080C688 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793E4192BF44B0080C688 /* Photo.m */; };
-		BE4793E8192BF44B0080C688 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4793E7192BF44B0080C688 /* Profile.m */; };
 		BEC31B91191EB19F004C3317 /* Profile+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B90191EB19F004C3317 /* Profile+Extensions.m */; };
 		BEC31B9A191ED432004C3317 /* ProfileDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC31B99191ED432004C3317 /* ProfileDetailTableViewController.m */; };
 		BEF25007191E4C950063374F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF25006191E4C950063374F /* Foundation.framework */; };
@@ -51,6 +51,8 @@
 		6B10B7415DE549668EB4D579 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		BE1DA54B192D276F00D69C72 /* Photo+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Extensions.h"; sourceTree = "<group>"; };
 		BE1DA54C192D276F00D69C72 /* Photo+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+Extensions.m"; sourceTree = "<group>"; };
+		BE1DA54E192D344A00D69C72 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		BE1DA54F192D344A00D69C72 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		BE1E604F191E7E870037C242 /* AppBusinessProfilesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppBusinessProfilesFetcher.h; sourceTree = "<group>"; };
 		BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppBusinessProfilesFetcher.m; sourceTree = "<group>"; };
 		BE1E6052191E8B630037C242 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
@@ -65,8 +67,6 @@
 		BE4793D5192BED350080C688 /* PhotoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoManager.m; sourceTree = "<group>"; };
 		BE4793E3192BF44B0080C688 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		BE4793E4192BF44B0080C688 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
-		BE4793E6192BF44B0080C688 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
-		BE4793E7192BF44B0080C688 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		BEC31B8F191EB19F004C3317 /* Profile+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Profile+Extensions.h"; sourceTree = "<group>"; };
 		BEC31B90191EB19F004C3317 /* Profile+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Profile+Extensions.m"; sourceTree = "<group>"; };
 		BEC31B98191ED432004C3317 /* ProfileDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileDetailTableViewController.h; sourceTree = "<group>"; };
@@ -143,10 +143,10 @@
 				BEC31B90191EB19F004C3317 /* Profile+Extensions.m */,
 				BE4793E3192BF44B0080C688 /* Photo.h */,
 				BE4793E4192BF44B0080C688 /* Photo.m */,
-				BE4793E6192BF44B0080C688 /* Profile.h */,
-				BE4793E7192BF44B0080C688 /* Profile.m */,
 				BE1DA54B192D276F00D69C72 /* Photo+Extensions.h */,
 				BE1DA54C192D276F00D69C72 /* Photo+Extensions.m */,
+				BE1DA54E192D344A00D69C72 /* Profile.h */,
+				BE1DA54F192D344A00D69C72 /* Profile.m */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -384,10 +384,10 @@
 				BEF25013191E4C960063374F /* main.m in Sources */,
 				BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */,
 				BE4793E5192BF44B0080C688 /* Photo.m in Sources */,
+				BE1DA550192D344A00D69C72 /* Profile.m in Sources */,
 				BEC31B9A191ED432004C3317 /* ProfileDetailTableViewController.m in Sources */,
 				BEF25045191E60B00063374F /* ProfileListViewController.m in Sources */,
 				BE1E6060191E93150037C242 /* NSManagedObject+CoreDataManagerExtensions.m in Sources */,
-				BE4793E8192BF44B0080C688 /* Profile.m in Sources */,
 				BE1E6066191EAE4C0037C242 /* ProfilePreviewCell.m in Sources */,
 				BE4793D6192BED350080C688 /* PhotoManager.m in Sources */,
 				BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */,

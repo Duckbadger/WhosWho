@@ -76,7 +76,6 @@
 		// Get all the profiles
 		NSString *userProfileXpathQueryString = @"//div[@class='col col2']";
 		NSArray *userProfilesElements = [htmlParser searchWithXPathQuery:userProfileXpathQueryString];
-		NSDate *lastModified = [NSDate date];
 		
 		//-----
 		// DATA IMPORT
@@ -167,18 +166,6 @@
 	{
 		[context deleteObject:oldProfile];
 	}
-}
-
-+ (void)deleteOldProfilesWithContext:(NSManagedObjectContext *)context andLastModifiedData:(NSDate *)lastModified
-{
-	NSFetchRequest *oldProfilesFetchRequest = [Profile fetchRequest];
-	oldProfilesFetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastModified < %@", lastModified];
-	NSArray *oldProfileArray = [context executeFetchRequest:oldProfilesFetchRequest error:nil];
-	for (Profile *profile in oldProfileArray)
-	{
-		[context deleteObject:profile];
-	}
-	[context save:nil];
 }
 
 @end
