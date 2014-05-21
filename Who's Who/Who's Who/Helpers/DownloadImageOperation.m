@@ -39,7 +39,10 @@
 {
 	@autoreleasepool {
 		
-		NSData *imageData = [NSData dataWithContentsOfURL:self.imageURL];
+		NSURLRequest *request = [NSURLRequest requestWithURL:self.imageURL
+												 cachePolicy:NSURLRequestUseProtocolCachePolicy
+											 timeoutInterval:20.0];
+		NSData *imageData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 		
 		if (self.isCancelled)
 		{
@@ -84,6 +87,11 @@
     UIGraphicsEndImageContext();
 	
 	return newImage;
+}
+
+- (void)cancel
+{
+	
 }
 
 @end
