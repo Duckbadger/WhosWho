@@ -32,9 +32,10 @@
 	NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
 	
 	// First get the html data from the TAB profiles page
-	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.theappbusiness.com/our-team/"]];
+	NetworkClient *client = [[NetworkClient alloc] init];
+	NSSet *mappingDictionaries = [client fetchProfileMappingDictionaries:error];
 	
-	NSSet *modifiedObjects = nil;//[AppBusinessProfilesFetcher parseData:data inContext:privateContext];
+	NSSet *modifiedProfiles = [AppBusinessProfilesFetcher processMappingDictionaries:modifiedObjects];
 	
 	[AppBusinessProfilesFetcher deleteOldProfilesWithModifiedProfiles:modifiedObjects inContext:privateContext];
 	
@@ -43,6 +44,17 @@
 	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfilesInContext:mainContext];
 	
 	return profileArray;
+}
+
+/*
+ *	Processes the set of dictionaries that are mapped to profile and photo properties
+ *	Returns a set of modified profiles
+ */
++ (NSSet *)processMappingDictionaries:(NSSet *)modifiedSet
+{
+	NSMutableSet *modifiedProfiles = [NSMutableSet new];
+	
+	return modifiedProfiles;
 }
 
 + (void)deleteOldProfilesWithModifiedProfiles:(NSSet *)modifiedProfiles inContext:(NSManagedObjectContext *)context
