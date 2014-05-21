@@ -109,9 +109,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSLog(@"Count = %ld", self.photoManager.operationDictionary.count);
-	
+{	
 	ProfilePreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
 
 	// Populate the cell with info from the profile
@@ -132,7 +130,6 @@
 									indexPath:indexPath
 						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
 							 
-							 NSLog(@"Cancelled");
 							 if (!cancelled)
 							 {
 								 weakPhoto.fullImageURL = fullImagePath;
