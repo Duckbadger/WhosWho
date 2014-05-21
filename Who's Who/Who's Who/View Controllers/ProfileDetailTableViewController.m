@@ -22,6 +22,8 @@ typedef enum
 
 @interface ProfileDetailTableViewController ()
 
+@property (strong, nonatomic) PhotoManager *photoManager;
+
 @end
 
 @implementation ProfileDetailTableViewController
@@ -29,8 +31,9 @@ typedef enum
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self) {
-        // Custom initialization
+    if (self)
+	{
+		self.photoManager = [[PhotoManager alloc] init];
     }
     return self;
 }
@@ -108,8 +111,9 @@ typedef enum
 				
 				__weak Photo *weakPhoto = mainPhoto;
 				__weak NSIndexPath *weakIndexPath = indexPath;
-				[PhotoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
-								 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
+				[self.photoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+											indexPath:nil
+								 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
 									 
 									 weakPhoto.fullImageURL = fullImagePath;
 									 weakPhoto.smallImageURL = smallImagePath;

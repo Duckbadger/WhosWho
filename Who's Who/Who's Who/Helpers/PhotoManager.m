@@ -7,8 +7,31 @@
 //
 
 #import "PhotoManager.h"
+#import "DownloadImageOperation.h"
+
+@interface PhotoManager ()
+
+@property (strong, nonatomic) NSMutableDictionary *operationDictionary;
+
+@property (strong, nonatomic) NSOperationQueue *downloadOperationQueue;;
+
+@end
+
 
 @implementation PhotoManager
+
+- (id)init
+{
+	self = [super init];
+	
+	if (self)
+	{
+		self.operationDictionary = [NSMutableDictionary new];
+		self.downloadOperationQueue = [NSOperationQueue new];
+	}
+	
+	return self;
+}
 
 + (NSString *)documentPathWithFileName:(NSString *)fileName
 {
@@ -22,39 +45,49 @@
 	return [[NSFileManager defaultManager] fileExistsAtPath:fullPath];
 }
 
-+ (void)imageWithSourceURL:(NSURL *)url
+/*
+ *	Downloads an image from a source URL
+ *	With an indexpath, stores the operation in a dictionary
+ */
+- (void)imageWithSourceURL:(NSURL *)url
+				 indexPath:(NSIndexPath *)indexPath
 			 completionBlock:(void (^)(NSString *fullImagePath,
-									   NSString *smallImagePath))completionBlock
+									   NSString *smallImagePath,
+									   BOOL cancelled))completionBlock
 {
 	NSParameterAssert(completionBlock);
+		
+	__weak PhotoManager *weakSelf = self;
+	DownloadImageOperation *downloadImageOperation = [[DownloadImageOperation alloc] initWithImageURL:url
+																					  completionBlock:
+													  ^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
+														  
+														  dispatch_async(dispatch_get_main_queue(), ^{
+															  completionBlock(fullImagePath, smallImagePath, cancelled);
+														  });
+														  
+														  [weakSelf.operationDictionary removeObjectForKey:indexPath];
+																						  
+													  }];
+
 	
-	dispatch_queue_t downloadQueue = dispatch_queue_create(NULL, NULL);
+	// Only add to the operation dictionary if indexpath exists, may not need to keep track
+	if (indexPath)
+	{
+		[self.operationDictionary setObject:downloadImageOperation forKey:indexPath];
+	}
 	
-	dispatch_async(downloadQueue, ^{
-		NSData *imageData = [NSData dataWithContentsOfURL:url];
-		
-		NSData *fullImageData = imageData;
-		NSString *fullImagePath = [NSString stringWithFormat:@"full%@", [[NSUUID UUID] UUIDString]];
-		[PhotoManager saveImageData:fullImageData filePath:fullImagePath];
-		
-		NSData *smallImageData = UIImageJPEGRepresentation([PhotoManager resizedImageWithData:imageData], 0.5);
-		NSString *smallImagePath = [NSString stringWithFormat:@"small%@", [[NSUUID UUID] UUIDString]];
-		[PhotoManager saveImageData:smallImageData filePath:smallImagePath];
-		
-		UIImage *image = [UIImage imageWithData:imageData];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			completionBlock(fullImagePath, smallImagePath);
-		});
-	});
+	[self.downloadOperationQueue addOperation:downloadImageOperation];
 }
 
-// Returns success
-+ (BOOL)saveImageData:(NSData *)data
-				   filePath:(NSString *)filePath
+/*
+ *	Cancels an operation given an index path
+ */
+- (void)cancelDownloadWithIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *fullPath = [PhotoManager documentPathWithFileName:filePath];
-	return [data writeToFile:fullPath atomically:YES];
+	DownloadImageOperation *downloadImageOperation = self.operationDictionary[indexPath];
+	
+	[downloadImageOperation cancel];
 }
 
 + (UIImage *)imageWithFilePath:(NSString *)filePath
@@ -63,17 +96,6 @@
 	return [UIImage imageWithContentsOfFile:fullPath];
 }
 
-+ (UIImage *)resizedImageWithData:(NSData *)data
-{
-	UIImage *image = [UIImage imageWithData:data];
-	CGSize newSize = CGSizeMake(150, 150);
-	
-	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-	
-	return newImage;
-}
+
 
 @end

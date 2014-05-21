@@ -11,6 +11,7 @@
 		BE1DA54D192D276F00D69C72 /* Photo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1DA54C192D276F00D69C72 /* Photo+Extensions.m */; };
 		BE1DA550192D344A00D69C72 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1DA54F192D344A00D69C72 /* Profile.m */; };
 		BE1DA556192D3BAF00D69C72 /* NetworkClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1DA555192D3BAF00D69C72 /* NetworkClient.m */; };
+		BE1DA559192D4F7800D69C72 /* DownloadImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1DA558192D4F7800D69C72 /* DownloadImageOperation.m */; };
 		BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */; };
 		BE1E6054191E8B630037C242 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1E6053191E8B630037C242 /* CoreDataManager.m */; };
 		BE1E6056191E8D8A0037C242 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1E6055191E8D8A0037C242 /* CoreData.framework */; };
@@ -56,6 +57,8 @@
 		BE1DA54F192D344A00D69C72 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		BE1DA554192D3BAF00D69C72 /* NetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkClient.h; sourceTree = "<group>"; };
 		BE1DA555192D3BAF00D69C72 /* NetworkClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkClient.m; sourceTree = "<group>"; };
+		BE1DA557192D4F7800D69C72 /* DownloadImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadImageOperation.h; sourceTree = "<group>"; };
+		BE1DA558192D4F7800D69C72 /* DownloadImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadImageOperation.m; sourceTree = "<group>"; };
 		BE1E604F191E7E870037C242 /* AppBusinessProfilesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppBusinessProfilesFetcher.h; sourceTree = "<group>"; };
 		BE1E6050191E7E870037C242 /* AppBusinessProfilesFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppBusinessProfilesFetcher.m; sourceTree = "<group>"; };
 		BE1E6052191E8B630037C242 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
@@ -136,6 +139,8 @@
 				BE4793D5192BED350080C688 /* PhotoManager.m */,
 				BE1DA554192D3BAF00D69C72 /* NetworkClient.h */,
 				BE1DA555192D3BAF00D69C72 /* NetworkClient.m */,
+				BE1DA557192D4F7800D69C72 /* DownloadImageOperation.h */,
+				BE1DA558192D4F7800D69C72 /* DownloadImageOperation.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -399,6 +404,7 @@
 				BE1E6051191E7E870037C242 /* AppBusinessProfilesFetcher.m in Sources */,
 				BE1DA54D192D276F00D69C72 /* Photo+Extensions.m in Sources */,
 				BE1E605A191E8F440037C242 /* WhosWho.xcdatamodeld in Sources */,
+				BE1DA559192D4F7800D69C72 /* DownloadImageOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

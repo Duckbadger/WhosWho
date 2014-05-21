@@ -10,11 +10,20 @@
 
 @interface PhotoManager : NSObject
 
+@property (strong, nonatomic, readonly) NSMutableDictionary *operationDictionary;
+
+- (id)init;
+
 + (BOOL)fileExistsWithFileName:(NSString *)fileName;
 
-+ (void)imageWithSourceURL:(NSURL *)url
+- (void)imageWithSourceURL:(NSURL *)url
+				 indexPath:(NSIndexPath *)indexPath
 		   completionBlock:(void (^)(NSString *fullImagePath,
-									 NSString *smallImagePath))completionBlock;
+									 NSString *smallImagePath,
+									 BOOL cancelled))completionBlock;
+
+- (void)cancelDownloadWithIndexPath:(NSIndexPath *)indexPath;
+
 + (UIImage *)imageWithFilePath:(NSString *)filePath;
 
 @end

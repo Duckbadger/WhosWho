@@ -20,6 +20,7 @@
 @property (strong, nonatomic) CoreDataManager *coreDataManager;
 @property (strong, nonatomic) NSArray *profileArray;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
+@property (strong, nonatomic) PhotoManager *photoManager;
 
 @end
 
@@ -28,8 +29,9 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self) {
-        // Custom initialization
+    if (self)
+	{
+		self.photoManager = [[PhotoManager alloc] init];
     }
     return self;
 }
@@ -107,7 +109,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+{	
 	ProfilePreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
 
 	// Populate the cell with info from the profile
@@ -124,17 +126,21 @@
 		
 		__weak Photo *weakPhoto = mainPhoto;
 		__weak NSIndexPath *weakIndexPath = indexPath;
-		[PhotoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
-						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
+		[self.photoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+									indexPath:indexPath
+						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
 							 
-							 weakPhoto.fullImageURL = fullImagePath;
-							 weakPhoto.smallImageURL = smallImagePath;
-							 
-							 [self.coreDataManager.mainContext save:nil];
-							 
-							 dispatch_async(dispatch_get_main_queue(), ^{
-								 [collectionView reloadItemsAtIndexPaths:@[weakIndexPath]];
-							 });
+							 if (!cancelled)
+							 {
+								 weakPhoto.fullImageURL = fullImagePath;
+								 weakPhoto.smallImageURL = smallImagePath;
+								 
+								 [self.coreDataManager.mainContext save:nil];
+								 
+								 dispatch_async(dispatch_get_main_queue(), ^{
+									 [collectionView reloadItemsAtIndexPaths:@[weakIndexPath]];
+								 });
+							 }
 						 }];
 	}
 	else
@@ -151,6 +157,11 @@
 	[self performSegueWithIdentifier:@"segueDetail" sender:indexPath];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	[self.photoManager cancelDownloadWithIndexPath:indexPath];
+}
+
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -163,5 +174,4 @@
 		detailVC.profile = profile;
 	}
 }
-
 @end
