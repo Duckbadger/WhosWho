@@ -50,9 +50,31 @@
  *	Processes the set of dictionaries that are mapped to profile and photo properties
  *	Returns a set of modified profiles
  */
-+ (NSSet *)processMappingDictionaries:(NSSet *)modifiedSet inContext:(NSManagedObjectContext *)context
++ (NSSet *)processMappingDictionaries:(NSSet *)mappingDictionaries inContext:(NSManagedObjectContext *)context
 {
 	NSMutableSet *modifiedProfiles = [NSMutableSet new];
+	
+	for (NSMutableDictionary *profileMappingDictionary in mappingDictionaries)
+	{
+		// Retrieve the photo dictionary from the profile and remove it from the original dict
+		NSMutableDictionary *photoDictionary = profileMappingDictionary[kKeyProfilePhoto];
+		[profileMappingDictionary removeObjectForKey:kKeyProfilePhoto];
+		
+		//----
+		// Create new profile or fetch existing one and update
+		Profile *profile = [Profile profileWithName:profileMappingDictionary[kKeyProfileName] inContext:context];
+		
+		[profile updateWithDictionary:profileMappingDictionary];
+		
+		//----
+		// Fill in properties for Photo
+		[photoDictionary setObject:profile forKey:kKeyPhotoProfile];
+		Photo *photo = [Photo photoWithSourceURL:photoDictionary[kKeyPhotoSourceURL] inContext:context];
+		
+		[photo updateWithDictionary:photoDictionary];
+		
+		[modifiedProfiles addObject:profile];
+	}
 	
 	return modifiedProfiles;
 }
