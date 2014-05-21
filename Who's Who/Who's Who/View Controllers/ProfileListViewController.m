@@ -71,12 +71,28 @@
 
 - (void)retrieveProfiles
 {
-	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	
+	dispatch_async(dispatch_queue_create(NULL, NULL), ^{
 		
-		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
+		NSError *error = nil;
+		
+		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles:&error];
 		NSLog(@"retrieved");
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			if (error)
+			{
+				[[[UIAlertView alloc] initWithTitle:@"Error"
+										   message:error.localizedDescription
+										  delegate:nil
+								 cancelButtonTitle:@"Dismiss"
+								  otherButtonTitles:nil] show];
+			}
+			
+			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+			
 			[self.collectionView reloadData];
 			[self.refreshControl endRefreshing];
 		});

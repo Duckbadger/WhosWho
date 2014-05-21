@@ -11,6 +11,7 @@
 #define kKeyProfileName			@"name"
 #define kKeyProfilePosition		@"position"
 #define kKeyProfileBiography	@"biography"
+#define kKeyProfilePhoto		@"photo"
 
 @interface Profile (Extensions)
 
