@@ -71,7 +71,7 @@
 
 - (void)retrieveProfiles
 {
-	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
+	dispatch_async(dispatch_queue_create(NULL, NULL), ^{
 		
 		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
 		NSLog(@"retrieved");
