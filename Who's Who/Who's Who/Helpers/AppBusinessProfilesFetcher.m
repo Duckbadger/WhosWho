@@ -88,12 +88,8 @@
 		 *	[2]	Position
 		 *	[3]	Bio
 		 */
-		NSInteger index = 0;
 		for (TFHppleElement *profileElement in userProfilesElements)
 		{
-			index++;
-//			if (index > 20) break;
-			
 			NSMutableDictionary *profileDictionary = [NSMutableDictionary new];
 			NSMutableDictionary *photoDictionary = [NSMutableDictionary new];
 			
