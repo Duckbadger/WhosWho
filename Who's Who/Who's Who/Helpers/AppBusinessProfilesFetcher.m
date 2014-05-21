@@ -36,6 +36,10 @@
 	
 	NSSet *modifiedObjects = [AppBusinessProfilesFetcher parseData:data inContext:privateContext];
 	
+	[AppBusinessProfilesFetcher deleteOldProfilesWithModifiedProfiles:modifiedObjects inContext:privateContext];
+	
+	[privateContext save:nil];
+	
 	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfilesInContext:mainContext];
 	
 	return profileArray;
@@ -85,8 +89,12 @@
 		 *	[2]	Position
 		 *	[3]	Bio
 		 */
+		NSInteger index = 0;
 		for (TFHppleElement *profileElement in userProfilesElements)
 		{
+			index++;
+//			if (index > 20) break;
+			
 			NSMutableDictionary *profileDictionary = [NSMutableDictionary new];
 			NSMutableDictionary *photoDictionary = [NSMutableDictionary new];
 			
@@ -146,7 +154,18 @@
 	
 	return modifiedObjects;
 }
+
++ (void)deleteOldProfilesWithModifiedProfiles:(NSSet *)modifiedProfiles inContext:(NSManagedObjectContext *)context
+{
+	NSFetchRequest *fetchRequest = [Profile fetchRequest];
+	NSArray *originalProfileArray = [context executeFetchRequest:fetchRequest error:nil];
+	NSMutableSet *originalSet = [NSMutableSet setWithArray:originalProfileArray];
+	
+	[originalSet minusSet:modifiedProfiles];
+	
+	for (Profile *oldProfile in originalSet)
 	{
+		[context deleteObject:oldProfile];
 	}
 }
 
