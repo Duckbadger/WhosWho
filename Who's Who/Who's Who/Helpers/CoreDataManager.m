@@ -50,10 +50,7 @@
 			[[managedObjectContext objectWithID:object.objectID] willAccessValueForKey:nil];
 		}
 		
-		[managedObjectContext performBlock:^{
-			[self.mainContext mergeChangesFromContextDidSaveNotification:notification];
-		}];
-		
+		[self.mainContext mergeChangesFromContextDidSaveNotification:notification];
 	}
 }
 
