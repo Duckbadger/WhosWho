@@ -112,6 +112,7 @@ typedef enum
 				__weak Photo *weakPhoto = mainPhoto;
 				__weak NSIndexPath *weakIndexPath = indexPath;
 				[self.photoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+											indexPath:nil
 								 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
 									 
 									 weakPhoto.fullImageURL = fullImagePath;

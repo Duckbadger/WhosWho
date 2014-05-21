@@ -10,11 +10,14 @@
 
 @interface PhotoManager : NSObject
 
+@property (strong, nonatomic, readonly) NSMutableDictionary *operationDictionary;
+
 - (id)init;
 
 + (BOOL)fileExistsAtPath:(NSString *)path;
 
 - (void)imageWithSourceURL:(NSURL *)url
+				 indexPath:(NSIndexPath *)indexPath
 		   completionBlock:(void (^)(NSString *fullImagePath,
 									 NSString *smallImagePath))completionBlock;
 + (UIImage *)imageWithFilePath:(NSString *)filePath;

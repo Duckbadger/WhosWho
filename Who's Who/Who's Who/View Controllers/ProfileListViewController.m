@@ -110,6 +110,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSLog(@"Count = %ld", self.photoManager.operationDictionary.count);
+	
 	ProfilePreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
 
 	// Populate the cell with info from the profile
@@ -127,6 +129,7 @@
 		__weak Photo *weakPhoto = mainPhoto;
 		__weak NSIndexPath *weakIndexPath = indexPath;
 		[self.photoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+									indexPath:indexPath
 						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
 							 
 							 weakPhoto.fullImageURL = fullImagePath;

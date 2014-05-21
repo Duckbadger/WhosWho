@@ -26,6 +26,7 @@
 	
 	if (self)
 	{
+		self.operationDictionary = [NSMutableDictionary new];
 		self.downloadOperationQueue = [NSOperationQueue new];
 	}
 	
@@ -45,15 +46,12 @@
 }
 
 - (void)imageWithSourceURL:(NSURL *)url
+				 indexPath:(NSIndexPath *)indexPath
 			 completionBlock:(void (^)(NSString *fullImagePath,
 									   NSString *smallImagePath))completionBlock
 {
 	NSParameterAssert(completionBlock);
-	
-//	dispatch_queue_t downloadQueue = dispatch_queue_create(NULL, NULL);
-	
-//	dispatch_async(downloadQueue, ^{
-	
+		
 	DownloadImageOperation *downloadImageOperation = [[DownloadImageOperation alloc] initWithImageURL:url
 																					  completionBlock:
 													  ^(NSString *fullImagePath, NSString *smallImagePath) {
@@ -64,7 +62,12 @@
 														  
 													  }];
 	
-				
+	// Only add to the operation dictionary if indexpath exists, may not need to keep track
+	if (indexPath)
+	{
+		[self.operationDictionary setObject:downloadImageOperation forKey:indexPath];
+	}
+	
 	[self.downloadOperationQueue addOperation:downloadImageOperation];
 }
 
