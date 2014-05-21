@@ -12,6 +12,7 @@
 
 - (id)initWithImageURL:(NSURL *)imageURL
 	   completionBlock:(void (^)(NSString *fullImagePath,
-								 NSString *smallImagePath))imageCompletionBlock;
+								 NSString *smallImagePath,
+								 BOOL cancelled))imageCompletionBlock;
 
 @end

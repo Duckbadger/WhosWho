@@ -14,12 +14,13 @@
 
 - (id)init;
 
-+ (BOOL)fileExistsAtPath:(NSString *)path;
++ (BOOL)fileExistsWithFileName:(NSString *)fileName;
 
 - (void)imageWithSourceURL:(NSURL *)url
 				 indexPath:(NSIndexPath *)indexPath
 		   completionBlock:(void (^)(NSString *fullImagePath,
-									 NSString *smallImagePath))completionBlock;
+									 NSString *smallImagePath,
+									 BOOL cancelled))completionBlock;
 + (UIImage *)imageWithFilePath:(NSString *)filePath;
 
 @end

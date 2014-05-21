@@ -48,19 +48,24 @@
 - (void)imageWithSourceURL:(NSURL *)url
 				 indexPath:(NSIndexPath *)indexPath
 			 completionBlock:(void (^)(NSString *fullImagePath,
-									   NSString *smallImagePath))completionBlock
+									   NSString *smallImagePath,
+									   BOOL cancelled))completionBlock
 {
 	NSParameterAssert(completionBlock);
 		
+	__weak PhotoManager *weakSelf = self;
 	DownloadImageOperation *downloadImageOperation = [[DownloadImageOperation alloc] initWithImageURL:url
 																					  completionBlock:
-													  ^(NSString *fullImagePath, NSString *smallImagePath) {
-
+													  ^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
+														  
 														  dispatch_async(dispatch_get_main_queue(), ^{
-															  completionBlock(fullImagePath, smallImagePath);
+															  completionBlock(fullImagePath, smallImagePath, cancelled);
 														  });
 														  
+														  [weakSelf.operationDictionary removeObjectForKey:indexPath];
+																						  
 													  }];
+
 	
 	// Only add to the operation dictionary if indexpath exists, may not need to keep track
 	if (indexPath)

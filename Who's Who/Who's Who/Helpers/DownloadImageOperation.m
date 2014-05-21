@@ -11,7 +11,7 @@
 @interface DownloadImageOperation ()
 
 @property (strong, nonatomic) NSURL *imageURL;
-@property (copy, nonatomic) void (^imageCompletionBlock)(NSString *fullImagePath, NSString *smallImagePath);
+@property (copy, nonatomic) void (^imageCompletionBlock)(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled);
 
 @end
 
@@ -20,7 +20,8 @@
 
 - (id)initWithImageURL:(NSURL *)imageURL
 	   completionBlock:(void (^)(NSString *fullImagePath,
-								 NSString *smallImagePath))imageCompletionBlock
+								 NSString *smallImagePath,
+								 BOOL cancelled))imageCompletionBlock
 {
 	NSParameterAssert(imageURL);
 	NSParameterAssert(imageCompletionBlock);
@@ -41,6 +42,7 @@
 		NSData *imageData = [NSData dataWithContentsOfURL:self.imageURL];
 		
 		if (self.isCancelled)
+			self.imageCompletionBlock(nil, nil, YES);
 			return;
 		
 		NSData *fullImageData = imageData;
@@ -51,7 +53,7 @@
 		NSString *smallImagePath = [NSString stringWithFormat:@"small%@", [[NSUUID UUID] UUIDString]];
 		[DownloadImageOperation saveImageData:smallImageData filePath:smallImagePath];
 		
-		self.imageCompletionBlock(fullImagePath, smallImagePath);
+		self.imageCompletionBlock(fullImagePath, smallImagePath, NO);
 	}
 }
 

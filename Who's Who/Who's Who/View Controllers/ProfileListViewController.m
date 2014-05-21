@@ -130,16 +130,19 @@
 		__weak NSIndexPath *weakIndexPath = indexPath;
 		[self.photoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
 									indexPath:indexPath
-						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath) {
+						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
 							 
-							 weakPhoto.fullImageURL = fullImagePath;
-							 weakPhoto.smallImageURL = smallImagePath;
-							 
-							 [self.coreDataManager.mainContext save:nil];
-							 
-							 dispatch_async(dispatch_get_main_queue(), ^{
-								 [collectionView reloadItemsAtIndexPaths:@[weakIndexPath]];
-							 });
+							 if (!cancelled)
+							 {
+								 weakPhoto.fullImageURL = fullImagePath;
+								 weakPhoto.smallImageURL = smallImagePath;
+								 
+								 [self.coreDataManager.mainContext save:nil];
+								 
+								 dispatch_async(dispatch_get_main_queue(), ^{
+									 [collectionView reloadItemsAtIndexPaths:@[weakIndexPath]];
+								 });
+							 }
 						 }];
 	}
 	else
