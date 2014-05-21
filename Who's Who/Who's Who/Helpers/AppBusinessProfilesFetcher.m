@@ -35,9 +35,9 @@
 	NetworkClient *client = [[NetworkClient alloc] init];
 	NSSet *mappingDictionaries = [client fetchProfileMappingDictionaries:error];
 	
-	NSSet *modifiedProfiles = [AppBusinessProfilesFetcher processMappingDictionaries:modifiedObjects];
+	NSSet *modifiedProfiles = [AppBusinessProfilesFetcher processMappingDictionaries:mappingDictionaries inContext:privateContext];
 	
-	[AppBusinessProfilesFetcher deleteOldProfilesWithModifiedProfiles:modifiedObjects inContext:privateContext];
+	[AppBusinessProfilesFetcher deleteOldProfilesWithModifiedProfiles:modifiedProfiles inContext:privateContext];
 	
 	[privateContext save:nil];
 	
@@ -50,7 +50,7 @@
  *	Processes the set of dictionaries that are mapped to profile and photo properties
  *	Returns a set of modified profiles
  */
-+ (NSSet *)processMappingDictionaries:(NSSet *)modifiedSet
++ (NSSet *)processMappingDictionaries:(NSSet *)modifiedSet inContext:(NSManagedObjectContext *)context
 {
 	NSMutableSet *modifiedProfiles = [NSMutableSet new];
 	
