@@ -15,15 +15,11 @@
 
 @implementation AppBusinessProfilesFetcher
 
-+ (NSArray *)fetchCachedProfiles
++ (NSArray *)fetchCachedProfilesInContext:(NSManagedObjectContext *)context
 {
-	// Retrieve the main context from the core data manager
-	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
-	
 	// Retrieve the objects to return
 	NSFetchRequest *fetchRequest = [Profile fetchRequest];
-	NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
+	NSArray *profileArray = [context executeFetchRequest:fetchRequest error:nil];
 	
 	return profileArray;
 }
@@ -33,14 +29,14 @@
 	// Retrieve the main context from the core data manager
 	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
 	NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
+	NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
 	
 	// First get the html data from the TAB profiles page
 	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.theappbusiness.com/our-team/"]];
 	
-	NSSet *modifiedObjects = [AppBusinessProfilesFetcher parseData:data];
+	NSSet *modifiedObjects = [AppBusinessProfilesFetcher parseData:data inContext:privateContext];
 	
-		
-	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
+	NSArray *profileArray = [AppBusinessProfilesFetcher fetchCachedProfilesInContext:mainContext];
 	
 	return profileArray;
 }
@@ -49,16 +45,13 @@
  *	Parses the HTML data and extracts the user data
  *	Returns a set of all the modified Profile objects
  */
-+ (NSSet *)parseData:(NSData *)data
++ (NSSet *)parseData:(NSData *)data inContext:(NSManagedObjectContext *)context
 {
-	NSMutableSet *modifiedObjects = nil;
+	NSMutableSet *modifiedObjects = [NSMutableSet new];
 	
 	// If we have any data to parse, go ahead and parse it.
 	if (data)
 	{
-		AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-		NSManagedObjectContext *mainContext = appDelegate.coreDataManager.mainContext;
-
 		// HTML parser
 		TFHpple *htmlParser = [TFHpple hppleWithHTMLData:data];
 		
@@ -84,7 +77,6 @@
 		//-----
 		// DATA IMPORT
 		//-----
-		NSManagedObjectContext *privateContext = [appDelegate.coreDataManager createPrivateContext];
 		
 		/*
 		 *	Note - Structure for the profileElement is:
@@ -130,7 +122,7 @@
 			
 			//----
 			// Create new profile or fetch existing one and update
-			Profile *profile = [Profile profileWithName:name inContext:privateContext];
+			Profile *profile = [Profile profileWithName:name inContext:context];
 			
 			[profile updateWithDictionary:profileDictionary];
 			
@@ -139,33 +131,22 @@
 			
 			//----
 			// Fill in properties for Photo
-			Photo *photo = [Photo photoWithSourceURL:imageString inContext:privateContext];
+			Photo *photo = [Photo photoWithSourceURL:imageString inContext:context];
 	
 			[photo updateWithDictionary:photoDictionary];
 			
+			//----
+			// Add the profile to the modified objects set
+			[modifiedObjects addObject:profile];
 		}
-		
-		// Save the context
-		[privateContext save:nil];
 		
 		// End DATA IMPORT
 		//-----
-		
-		//-----
-		// Delete old profiles
-		// Anything not updated was therefore not on the website anymore
-		// Check for anything below the last modified date
-		// Only do this if the url was valid, i.e. got userProfileElements
-		if (userProfilesElements.count > 0)
-		{
-			[self deleteOldProfilesWithContext:mainContext andLastModifiedData:lastModified];
-		}
-		
-		return modifiedObjects;
 	}
-	else
+	
+	return modifiedObjects;
+}
 	{
-		return modifiedObjects;
 	}
 }
 
