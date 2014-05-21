@@ -80,7 +80,6 @@
 		NSError *error = nil;
 		
 		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles:&error];
-		NSLog(@"retrieved");
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
