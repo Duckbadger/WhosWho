@@ -68,7 +68,9 @@
 	return [documentsPath stringByAppendingPathComponent:fileName];
 }
 
-// Returns success
+/*
+ *	Writes the data to file with a given file path
+ */
 + (BOOL)saveImageData:(NSData *)data
 			 filePath:(NSString *)filePath
 {
