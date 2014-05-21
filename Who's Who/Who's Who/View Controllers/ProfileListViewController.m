@@ -73,7 +73,7 @@
 {
 	dispatch_async(dispatch_queue_create(NULL, NULL), ^{
 		
-		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
+		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles:nil];
 		NSLog(@"retrieved");
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
