@@ -76,6 +76,13 @@
 	[self.downloadOperationQueue addOperation:downloadImageOperation];
 }
 
+- (void)cancelDownloadWithIndexPath:(NSIndexPath *)indexPath
+{
+	DownloadImageOperation *downloadImageOperation = self.operationDictionary[indexPath];
+	
+	[downloadImageOperation cancel];
+}
+
 + (UIImage *)imageWithFilePath:(NSString *)filePath
 {
 	NSString *fullPath = [PhotoManager documentPathWithFileName:filePath];
