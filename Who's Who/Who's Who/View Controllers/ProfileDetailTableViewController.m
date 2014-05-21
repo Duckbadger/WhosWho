@@ -23,6 +23,7 @@ typedef enum
 @interface ProfileDetailTableViewController ()
 
 @property (strong, nonatomic) PhotoManager *photoManager;
+@property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
 
 @end
 
@@ -44,6 +45,19 @@ typedef enum
     
 	self.title = self.profile.name;
 	self.tableView.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
+	self.photoImageView.layer.cornerRadius = CGRectGetWidth(self.photoImageView.frame) / 2;
+	self.photoImageView.layer.masksToBounds = YES;
+	self.photoImageView.layer.borderColor = [UIColor colorWithRed:255.0/255
+															green:68.0/255
+															 blue:0.0/255
+															alpha:1.0].CGColor;
+	self.photoImageView.layer.borderWidth = 5.0;
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,13 +115,11 @@ typedef enum
 		{
 			Photo *mainPhoto = [self.profile mainPhoto];
 			
-			UIImageView *imageView = (UIImageView *)[cell viewWithTag:kTagImage];
-			
 			// If we have no image, we need to download it, update the collection view after
 			// Else, we already have the data so just retrieve the data
 			if (!mainPhoto.fullImageURL)
 			{
-				imageView.image = nil;
+				self.photoImageView.image = nil;
 				
 				__weak Photo *weakPhoto = mainPhoto;
 				__weak NSIndexPath *weakIndexPath = indexPath;
@@ -128,16 +140,8 @@ typedef enum
 			}
 			else
 			{
-				imageView.image = [PhotoManager imageWithFilePath:mainPhoto.fullImageURL];
+				self.photoImageView.image = [PhotoManager imageWithFilePath:mainPhoto.fullImageURL];
 			}
-			
-			imageView.layer.cornerRadius = 105.0;
-			imageView.layer.masksToBounds = YES;
-			imageView.layer.borderColor = [UIColor colorWithRed:255.0/255
-														   green:68.0/255
-															blue:0.0/255
-														   alpha:1.0].CGColor;
-			imageView.layer.borderWidth = 5.0;
 			
 			break;
 		}

@@ -158,6 +158,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="7DQ-Jj-yQ2"/>
+                    <connections>
+                        <outlet property="photoImageView" destination="GYZ-DG-T8v" id="Sis-Nq-cg7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IZZ-tW-GGf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
