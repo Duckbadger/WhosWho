@@ -42,8 +42,10 @@
 		NSData *imageData = [NSData dataWithContentsOfURL:self.imageURL];
 		
 		if (self.isCancelled)
+		{
 			self.imageCompletionBlock(nil, nil, YES);
 			return;
+		}
 		
 		NSData *fullImageData = imageData;
 		NSString *fullImagePath = [NSString stringWithFormat:@"full%@", [[NSUUID UUID] UUIDString]];
