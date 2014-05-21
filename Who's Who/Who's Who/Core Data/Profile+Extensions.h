@@ -8,11 +8,16 @@
 
 #import "Profile.h"
 
+#define kKeyProfileName			@"name"
+#define kKeyProfilePosition		@"position"
+#define kKeyProfileBiography	@"biography"
+#define kKeyProfilePhoto		@"photo"
+
 @interface Profile (Extensions)
 
-- (BOOL)hasCachedImage;
-- (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock;
-- (UIImage *)getCachedSmallImage;
-- (UIImage *)getCachedFullImage;
+- (Photo *)mainPhoto;
++ (Profile *)profileWithName:(NSString *)name
+				   inContext:(NSManagedObjectContext *)context;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end

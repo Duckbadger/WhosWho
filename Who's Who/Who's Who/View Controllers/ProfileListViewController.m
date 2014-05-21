@@ -10,7 +10,9 @@
 #import "ProfileListViewController.h"
 #import "ProfilePreviewCell.h"
 #import "AppBusinessProfilesFetcher.h"
+#import "PhotoManager.h"
 #import "Profile+Extensions.h"
+#import "Photo.h"
 #import "ProfileDetailTableViewController.h"
 
 @interface ProfileListViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -18,16 +20,18 @@
 @property (strong, nonatomic) CoreDataManager *coreDataManager;
 @property (strong, nonatomic) NSArray *profileArray;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
+@property (strong, nonatomic) PhotoManager *photoManager;
 
 @end
 
 @implementation ProfileListViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    self = [super initWithCoder:aDecoder];
+    if (self)
+	{
+		self.photoManager = [[PhotoManager alloc] init];
     }
     return self;
 }
@@ -40,7 +44,7 @@
 	
 	AppDelegate *appDel = [UIApplication sharedApplication].delegate;
 	self.coreDataManager = appDel.coreDataManager;
-	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfiles];
+	self.profileArray = [AppBusinessProfilesFetcher fetchCachedProfilesInContext:self.coreDataManager.mainContext];
 	
 	self.refreshControl = [[UIRefreshControl alloc] init];
 	[self.refreshControl addTarget:self action:@selector(startRefresh)
@@ -69,12 +73,27 @@
 
 - (void)retrieveProfiles
 {
-	dispatch_async(dispatch_queue_create("refreshQueue", NULL), ^{
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	
+	dispatch_async(dispatch_queue_create(NULL, NULL), ^{
 		
-		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles];
-		NSLog(@"retrieved");
+		NSError *error = nil;
+		
+		self.profileArray = [AppBusinessProfilesFetcher fetchProfiles:&error];
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			if (error)
+			{
+				[[[UIAlertView alloc] initWithTitle:@"Error"
+										   message:error.localizedDescription
+										  delegate:nil
+								 cancelButtonTitle:@"Dismiss"
+								  otherButtonTitles:nil] show];
+			}
+			
+			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+			
 			[self.collectionView reloadData];
 			[self.refreshControl endRefreshing];
 		});
@@ -88,35 +107,44 @@
 	return self.profileArray.count;
 }
 
-// The cell that is returned must be retrieved from a call to - dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+{	
 	ProfilePreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
 
 	// Populate the cell with info from the profile
 	Profile *profile = self.profileArray[indexPath.row];
 	cell.nameLabel.text = profile.name;
 	cell.positionLabel.text = profile.position;
-	
+
+	Photo *mainPhoto = [profile mainPhoto];
 	// If we have no image, we need to download it, update the collection view after
 	// Else, we already have the data so just retrieve the data
-	if (![profile hasCachedImage])
+	if (!mainPhoto.smallImageURL)
 	{
 		cell.profileImageView.image = nil;
 		
-		[profile getImageWithBlock:^(UIImage *image) {
-			cell.profileImageView.image = image;
-			
-			[self.coreDataManager.mainContext save:nil];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				[collectionView reloadItemsAtIndexPaths:@[indexPath]];
-			});
-		}];
+		__weak Photo *weakPhoto = mainPhoto;
+		__weak NSIndexPath *weakIndexPath = indexPath;
+		[self.photoManager imageWithSourceURL:[NSURL URLWithString:mainPhoto.sourceURL]
+									indexPath:indexPath
+						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
+							 
+							 if (!cancelled)
+							 {
+								 weakPhoto.fullImageURL = fullImagePath;
+								 weakPhoto.smallImageURL = smallImagePath;
+								 
+								 [self.coreDataManager.mainContext save:nil];
+								 
+								 dispatch_async(dispatch_get_main_queue(), ^{
+									 [collectionView reloadItemsAtIndexPaths:@[weakIndexPath]];
+								 });
+							 }
+						 }];
 	}
 	else
 	{
-		cell.profileImageView.image = [profile getCachedSmallImage];
+		cell.profileImageView.image = [PhotoManager imageWithFilePath:mainPhoto.smallImageURL];
 	}
 	
     return cell;
@@ -126,6 +154,11 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	[self performSegueWithIdentifier:@"segueDetail" sender:indexPath];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	[self.photoManager cancelDownloadWithIndexPath:indexPath];
 }
 
 #pragma mark - Navigation
@@ -140,5 +173,4 @@
 		detailVC.profile = profile;
 	}
 }
-
 @end

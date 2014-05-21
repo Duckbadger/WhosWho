@@ -7,52 +7,59 @@
 //
 
 #import "Profile+Extensions.h"
+#import "NSManagedObject+CoreDataManagerExtensions.h"
+#import <KZPropertyMapper/KZPropertyMapper.h>
 
 @implementation Profile (Extensions)
 
-- (BOOL)hasCachedImage
+/*
+ *	Gets the photo with an index of 0, which is the main photo
+ *	Index added for now due to possible extensions in future of multiple photos
+ */
+- (Photo *)mainPhoto
 {
-	return (self.fullImageData && self.smallImageData);
-}
-
-- (void)getImageWithBlock:(void (^)(UIImage *image))completionBlock
-{
-	NSURL *url = [NSURL URLWithString:self.imageString];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"index = %ld", 0];
+	NSSet *filteredSet = [self.photos filteredSetUsingPredicate:predicate];
 	
-	dispatch_queue_t downloadQueue = dispatch_queue_create("imageQueue", NULL);
-	dispatch_async(downloadQueue, ^{
-		NSData *imageData = [NSData dataWithContentsOfURL:url];
-		
-		self.fullImageData = imageData;
-		self.smallImageData = UIImageJPEGRepresentation([Profile resizedImageWithData:imageData], 0.5);
-		
-		UIImage *image = [UIImage imageWithData:imageData];
-		completionBlock(image);
-	});
+	return (filteredSet.count > 0) ? filteredSet.anyObject : nil;
 }
 
-- (UIImage *)getCachedSmallImage
+/*
+ *	Fetches or creates a profile with the name property filled in
+ */
++ (Profile *)profileWithName:(NSString *)name
+				   inContext:(NSManagedObjectContext *)context
 {
-	return [UIImage imageWithData:self.smallImageData];
-}
-
-- (UIImage *)getCachedFullImage
-{
-	return [UIImage imageWithData:self.fullImageData];
-}
-
-
-+ (UIImage *)resizedImageWithData:(NSData *)data
-{
-	UIImage *image = [UIImage imageWithData:data];
-	CGSize newSize = CGSizeMake(150, 150);
+	// Create new profile or fetch existing one
+	NSFetchRequest *fetchRequest = [Profile fetchRequest];
+	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
 	
-	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+	Profile *profile = nil;
 	
-	return newImage;
+	NSArray *profileArray = [context executeFetchRequest:fetchRequest error:nil];
+	if (profileArray.count > 0)
+	{
+		profile = profileArray.firstObject;
+	}
+	else
+	{
+		profile = [Profile insertInContext:context];
+		profile.name = name;
+	}
+	
+	return profile;
+}
+
+/*
+ *	Updates instance of a profile with a dictionary mapped to properties
+ */
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+	[KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:
+	 @{kKeyProfileName : KZProperty(name),
+	   kKeyProfilePosition : KZProperty(position),
+	   kKeyProfileBiography : KZProperty(biography)
+	   }];
 }
 
 @end
