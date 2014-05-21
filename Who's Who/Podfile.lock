@@ -1,10 +1,13 @@
 PODS:
   - hpple (0.2.0)
+  - KZPropertyMapper (2.5.0)
 
 DEPENDENCIES:
   - hpple
+  - KZPropertyMapper
 
 SPEC CHECKSUMS:
-  hpple: dde62f905f482bbec50186280d1a1be2c881241b
+  hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
+  KZPropertyMapper: b5252aec33689d4f5cbfa3c74606a33de631dd19
 
 COCOAPODS: 0.32.1
