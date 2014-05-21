@@ -45,6 +45,10 @@
 	return [[NSFileManager defaultManager] fileExistsAtPath:fullPath];
 }
 
+/*
+ *	Downloads an image from a source URL
+ *	With an indexpath, stores the operation in a dictionary
+ */
 - (void)imageWithSourceURL:(NSURL *)url
 				 indexPath:(NSIndexPath *)indexPath
 			 completionBlock:(void (^)(NSString *fullImagePath,
@@ -76,6 +80,9 @@
 	[self.downloadOperationQueue addOperation:downloadImageOperation];
 }
 
+/*
+ *	Cancels an operation given an index path
+ */
 - (void)cancelDownloadWithIndexPath:(NSIndexPath *)indexPath
 {
 	DownloadImageOperation *downloadImageOperation = self.operationDictionary[indexPath];

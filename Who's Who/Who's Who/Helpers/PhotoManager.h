@@ -21,6 +21,9 @@
 		   completionBlock:(void (^)(NSString *fullImagePath,
 									 NSString *smallImagePath,
 									 BOOL cancelled))completionBlock;
+
+- (void)cancelDownloadWithIndexPath:(NSIndexPath *)indexPath;
+
 + (UIImage *)imageWithFilePath:(NSString *)filePath;
 
 @end
