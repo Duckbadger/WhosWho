@@ -10,4 +10,8 @@
 
 @interface DownloadImageOperation : NSOperation
 
+- (id)initWithImageURL:(NSURL *)imageURL
+	   completionBlock:(void (^)(NSString *fullImagePath,
+								 NSString *smallImagePath))imageCompletionBlock;
+
 @end

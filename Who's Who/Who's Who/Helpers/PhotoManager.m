@@ -7,8 +7,30 @@
 //
 
 #import "PhotoManager.h"
+#import "DownloadImageOperation.h"
+
+@interface PhotoManager ()
+
+@property (strong, nonatomic) NSMutableDictionary *operationDictionary;
+
+@property (strong, nonatomic) NSOperationQueue *downloadOperationQueue;;
+
+@end
+
 
 @implementation PhotoManager
+
+- (id)init
+{
+	self = [super init];
+	
+	if (self)
+	{
+		self.downloadOperationQueue = [NSOperationQueue new];
+	}
+	
+	return self;
+}
 
 + (NSString *)documentPathWithFileName:(NSString *)fileName
 {
@@ -22,39 +44,28 @@
 	return [[NSFileManager defaultManager] fileExistsAtPath:fullPath];
 }
 
-+ (void)imageWithSourceURL:(NSURL *)url
+- (void)imageWithSourceURL:(NSURL *)url
 			 completionBlock:(void (^)(NSString *fullImagePath,
 									   NSString *smallImagePath))completionBlock
 {
 	NSParameterAssert(completionBlock);
 	
-	dispatch_queue_t downloadQueue = dispatch_queue_create(NULL, NULL);
+//	dispatch_queue_t downloadQueue = dispatch_queue_create(NULL, NULL);
 	
-	dispatch_async(downloadQueue, ^{
-		NSData *imageData = [NSData dataWithContentsOfURL:url];
-		
-		NSData *fullImageData = imageData;
-		NSString *fullImagePath = [NSString stringWithFormat:@"full%@", [[NSUUID UUID] UUIDString]];
-		[PhotoManager saveImageData:fullImageData filePath:fullImagePath];
-		
-		NSData *smallImageData = UIImageJPEGRepresentation([PhotoManager resizedImageWithData:imageData], 0.5);
-		NSString *smallImagePath = [NSString stringWithFormat:@"small%@", [[NSUUID UUID] UUIDString]];
-		[PhotoManager saveImageData:smallImageData filePath:smallImagePath];
-		
-		UIImage *image = [UIImage imageWithData:imageData];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			completionBlock(fullImagePath, smallImagePath);
-		});
-	});
-}
+//	dispatch_async(downloadQueue, ^{
+	
+	DownloadImageOperation *downloadImageOperation = [[DownloadImageOperation alloc] initWithImageURL:url
+																					  completionBlock:
+													  ^(NSString *fullImagePath, NSString *smallImagePath) {
 
-// Returns success
-+ (BOOL)saveImageData:(NSData *)data
-				   filePath:(NSString *)filePath
-{
-	NSString *fullPath = [PhotoManager documentPathWithFileName:filePath];
-	return [data writeToFile:fullPath atomically:YES];
+														  dispatch_async(dispatch_get_main_queue(), ^{
+															  completionBlock(fullImagePath, smallImagePath);
+														  });
+														  
+													  }];
+	
+				
+	[self.downloadOperationQueue addOperation:downloadImageOperation];
 }
 
 + (UIImage *)imageWithFilePath:(NSString *)filePath
@@ -63,17 +74,6 @@
 	return [UIImage imageWithContentsOfFile:fullPath];
 }
 
-+ (UIImage *)resizedImageWithData:(NSData *)data
-{
-	UIImage *image = [UIImage imageWithData:data];
-	CGSize newSize = CGSizeMake(150, 150);
-	
-	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-	
-	return newImage;
-}
+
 
 @end

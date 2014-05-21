@@ -8,6 +8,78 @@
 
 #import "DownloadImageOperation.h"
 
+@interface DownloadImageOperation ()
+
+@property (strong, nonatomic) NSURL *imageURL;
+@property (copy, nonatomic) void (^imageCompletionBlock)(NSString *fullImagePath, NSString *smallImagePath);
+
+@end
+
+
 @implementation DownloadImageOperation
+
+- (id)initWithImageURL:(NSURL *)imageURL
+	   completionBlock:(void (^)(NSString *fullImagePath,
+								 NSString *smallImagePath))imageCompletionBlock
+{
+	NSParameterAssert(imageURL);
+	NSParameterAssert(imageCompletionBlock);
+	
+	if (self = [super init])
+	{
+		self.imageURL = imageURL;
+		self.imageCompletionBlock = imageCompletionBlock;
+	}
+	
+	return self;
+}
+
+- (void)main
+{
+	@autoreleasepool {
+		
+		NSData *imageData = [NSData dataWithContentsOfURL:self.imageURL];
+		
+		if (self.isCancelled)
+			return;
+		
+		NSData *fullImageData = imageData;
+		NSString *fullImagePath = [NSString stringWithFormat:@"full%@", [[NSUUID UUID] UUIDString]];
+		[DownloadImageOperation saveImageData:fullImageData filePath:fullImagePath];
+		
+		NSData *smallImageData = UIImageJPEGRepresentation([DownloadImageOperation resizedImageWithData:imageData], 0.5);
+		NSString *smallImagePath = [NSString stringWithFormat:@"small%@", [[NSUUID UUID] UUIDString]];
+		[DownloadImageOperation saveImageData:smallImageData filePath:smallImagePath];
+		
+		self.imageCompletionBlock(fullImagePath, smallImagePath);
+	}
+}
+
++ (NSString *)documentPathWithFileName:(NSString *)fileName
+{
+	NSString *documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+	return [documentsPath stringByAppendingPathComponent:fileName];
+}
+
+// Returns success
++ (BOOL)saveImageData:(NSData *)data
+			 filePath:(NSString *)filePath
+{
+	NSString *fullPath = [DownloadImageOperation documentPathWithFileName:filePath];
+	return [data writeToFile:fullPath atomically:YES];
+}
+
++ (UIImage *)resizedImageWithData:(NSData *)data
+{
+	UIImage *image = [UIImage imageWithData:data];
+	CGSize newSize = CGSizeMake(150, 150);
+	
+	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+	
+	return newImage;
+}
 
 @end
