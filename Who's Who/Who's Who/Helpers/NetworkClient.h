@@ -11,5 +11,6 @@
 @interface NetworkClient : NSObject
 
 - (id)init;
+- (NSSet *)fetchProfileMappingDictionaries:(NSError **)error;
 
 @end

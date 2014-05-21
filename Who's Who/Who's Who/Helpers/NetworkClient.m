@@ -22,7 +22,7 @@
 /*
  *	Queries the web page and returns a dictionary of all the modified objects
  */
-- (NSSet *)fetchProfileDictionaries:(NSError **)error
+- (NSSet *)fetchProfileMappingDictionaries:(NSError **)error
 {
 	NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.theappbusiness.com/our-team/"]];
 	
