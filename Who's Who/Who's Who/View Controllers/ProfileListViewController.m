@@ -132,6 +132,7 @@
 									indexPath:indexPath
 						 completionBlock:^(NSString *fullImagePath, NSString *smallImagePath, BOOL cancelled) {
 							 
+							 NSLog(@"Cancelled");
 							 if (!cancelled)
 							 {
 								 weakPhoto.fullImageURL = fullImagePath;
@@ -159,6 +160,11 @@
 	[self performSegueWithIdentifier:@"segueDetail" sender:indexPath];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	[self.photoManager cancelDownloadWithIndexPath:indexPath];
+}
+
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -171,5 +177,4 @@
 		detailVC.profile = profile;
 	}
 }
-
 @end
