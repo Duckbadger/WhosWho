@@ -8,6 +8,13 @@
 
 #import "Photo.h"
 
+#define kKeyPhotoProfile		@"name"
+#define kKeyPhotoSourceURL		@"sourceURL"
+
 @interface Photo (Extensions)
+
++ (Photo *)photoWithSourceURL:(NSString *)sourceURLString
+					inContext:(NSManagedObjectContext *)context;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -30,7 +30,6 @@
 + (Profile *)profileWithName:(NSString *)name
 				   inContext:(NSManagedObjectContext *)context
 {
-	//----
 	// Create new profile or fetch existing one
 	NSFetchRequest *fetchRequest = [Profile fetchRequest];
 	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];

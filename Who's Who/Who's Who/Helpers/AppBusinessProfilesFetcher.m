@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "CoreDataManager.h"
 #import "Profile+Extensions.h"
-#import "Photo.h"
+#import "Photo+Extensions.h"
 #import <TFHpple.h>
 
 @implementation AppBusinessProfilesFetcher
@@ -96,6 +96,7 @@
 		for (TFHppleElement *profileElement in userProfilesElements)
 		{
 			NSMutableDictionary *profileDictionary = [NSMutableDictionary new];
+			NSMutableDictionary *photoDictionary = [NSMutableDictionary new];
 			
 			//----
 			// Name
@@ -123,7 +124,9 @@
 			// Image
 			TFHppleElement *srcElement = profileElement.children[0];
 			TFHppleElement *imageElement = srcElement.children.firstObject;
-			NSString *imageString = imageElement.attributes[@"src"];
+			NSString *imageString = (imageElement.attributes[@"src"]) ?: @"";
+			[photoDictionary setObject:imageString
+								  forKey:kKeyPhotoSourceURL];
 			
 			//----
 			// Create new profile or fetch existing one and update
@@ -131,22 +134,14 @@
 			
 			[profile updateWithDictionary:profileDictionary];
 			
+			[photoDictionary setObject:profile
+								forKey:kKeyPhotoProfile];
+			
 			//----
 			// Fill in properties for Photo
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceURL == %@", imageString];
-			NSSet *filteredSet = [profile.photos filteredSetUsingPredicate:predicate];
-			Photo *photo = nil;
-			if (filteredSet.count > 0)
-			{
-				photo = filteredSet.anyObject;
-			}
-			else
-			{
-				photo = [Photo insertInContext:privateContext];
-			}
-			
-			photo.profile = profile;
-			photo.sourceURL = imageString;
+			Photo *photo = [Photo photoWithSourceURL:imageString inContext:privateContext];
+	
+			[photo updateWithDictionary:photoDictionary];
 			
 		}
 		
