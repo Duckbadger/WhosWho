@@ -94,8 +94,7 @@
 			// Name
 			TFHppleElement *hTagElement = profileElement.children[1];
 			TFHppleElement *nameElement = hTagElement.children.firstObject;
-			NSString *name = (nameElement.content) ?: @"";
-			[profileDictionary setObject:name
+			[profileDictionary setObject:(nameElement.content) ?: [NSNull null]
 								  forKey:kKeyProfileName];
 			
 			//----
@@ -116,8 +115,7 @@
 			// Image
 			TFHppleElement *srcElement = profileElement.children[0];
 			TFHppleElement *imageElement = srcElement.children.firstObject;
-			NSString *imageString = (imageElement.attributes[@"src"]) ?: @"";
-			[photoDictionary setObject:imageString
+			[photoDictionary setObject:(imageElement.attributes[@"src"]) ?: [NSNull null]
 								forKey:kKeyPhotoSourceURL];
 			
 			[profileDictionary setObject:photoDictionary
