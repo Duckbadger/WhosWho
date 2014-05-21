@@ -9,7 +9,7 @@
 #import "AppBusinessProfilesFetcher.h"
 #import "AppDelegate.h"
 #import "CoreDataManager.h"
-#import "Profile.h"
+#import "Profile+Extensions.h"
 #import "Photo.h"
 #import <TFHpple.h>
 
@@ -95,23 +95,29 @@
 		 */
 		for (TFHppleElement *profileElement in userProfilesElements)
 		{
+			NSMutableDictionary *profileDictionary = [NSMutableDictionary new];
+			
 			//----
 			// Name
 			TFHppleElement *hTagElement = profileElement.children[1];
 			TFHppleElement *nameElement = hTagElement.children.firstObject;
-			NSString *name = nameElement.content;
+			NSString *name = (nameElement.content) ?: @"";
+			[profileDictionary setObject:name
+								 forKey:kKeyProfileName];
 			
 			//----
 			// Position
 			TFHppleElement *pTagElement = profileElement.children[2];
 			TFHppleElement *positionElement = pTagElement.children.firstObject;
-			NSString *position = positionElement.content;
+			[profileDictionary setObject:(positionElement.content) ?: [NSNull null]
+								 forKey:kKeyProfilePosition];
 			
 			//----
 			// Bio
 			TFHppleElement *userDescriptionPTagElement = profileElement.children[3];
 			TFHppleElement *bioElement = userDescriptionPTagElement.children.firstObject;
-			NSString *biography = bioElement.content;
+			[profileDictionary setObject:(bioElement.content) ?: [NSNull null]
+								 forKey:kKeyProfileBiography];
 			
 			//----
 			// Image
@@ -136,11 +142,8 @@
 			}
 			
 			//----
-			// Fill in properties for Profile
-			profile.name = name;
-			profile.position = position;
-			profile.biography = biography;
-			profile.lastModified = lastModified;
+			// Update profile object
+			[profile updateWithDictionary:profileDictionary];
 			
 			//----
 			// Fill in properties for Photo

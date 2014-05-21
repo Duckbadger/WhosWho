@@ -7,6 +7,7 @@
 //
 
 #import "Profile+Extensions.h"
+#import <KZPropertyMapper/KZPropertyMapper.h>
 
 @implementation Profile (Extensions)
 
@@ -22,10 +23,13 @@
 	return (filteredSet.count > 0) ? filteredSet.anyObject : nil;
 }
 
-+ (Profile *)updateWithDictionary:(NSDictionary *)dictionary
+- (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-	//Note use KZPropertyMapper
-	return nil;
+	[KZPropertyMapper mapValuesFrom:dictionary toInstance:self usingMapping:
+	 @{kKeyProfileName : KZProperty(name),
+	   kKeyProfilePosition : KZProperty(position),
+	   kKeyProfileBiography : KZProperty(biography)
+	   }];
 }
 
 @end
