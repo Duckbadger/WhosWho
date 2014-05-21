@@ -33,7 +33,15 @@
 	
 	// First get the html data from the TAB profiles page
 	NetworkClient *client = [[NetworkClient alloc] init];
-	NSSet *mappingDictionaries = [client fetchProfileMappingDictionaries:error];
+	NSError *fetchError = nil;
+	NSSet *mappingDictionaries = [client fetchProfileMappingDictionaries:&fetchError];
+	
+	if (fetchError)
+	{
+		*error = fetchError;
+		
+		return [AppBusinessProfilesFetcher fetchCachedProfilesInContext:mainContext];
+	}
 	
 	NSSet *modifiedProfiles = [AppBusinessProfilesFetcher processMappingDictionaries:mappingDictionaries inContext:privateContext];
 	
