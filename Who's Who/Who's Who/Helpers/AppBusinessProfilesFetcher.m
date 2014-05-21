@@ -126,23 +126,9 @@
 			NSString *imageString = imageElement.attributes[@"src"];
 			
 			//----
-			// Create new profile or fetch existing one
-			NSFetchRequest *fetchRequest = [Profile fetchRequest];
-			fetchRequest.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
+			// Create new profile or fetch existing one and update
+			Profile *profile = [Profile profileWithName:name inContext:privateContext];
 			
-			Profile *profile = nil;
-			NSArray *profileArray = [mainContext executeFetchRequest:fetchRequest error:nil];
-			if (profileArray.count > 0)
-			{
-				profile = profileArray.firstObject;
-			}
-			else
-			{
-				profile = [Profile insertInContext:privateContext];
-			}
-			
-			//----
-			// Update profile object
 			[profile updateWithDictionary:profileDictionary];
 			
 			//----

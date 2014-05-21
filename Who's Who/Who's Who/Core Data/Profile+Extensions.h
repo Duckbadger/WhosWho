@@ -15,6 +15,8 @@
 @interface Profile (Extensions)
 
 - (Photo *)mainPhoto;
++ (Profile *)profileWithName:(NSString *)name
+				   inContext:(NSManagedObjectContext *)context;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end
